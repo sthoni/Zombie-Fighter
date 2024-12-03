@@ -14,9 +14,11 @@ class App:
         self.backgroundColor = 0
         pyxel.run(self.update, self.draw)
 
+#fuiefuhefzhefzh
+
     def update(self):
         
-        if pyxel.btn(pyxel.KEY_D):
+        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT):
             if self.rect_x < pyxel.width - 8 - 1:
                 self.rect_x += 1
         if pyxel.btn(pyxel.KEY_S):   
