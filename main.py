@@ -1,5 +1,7 @@
 import pyxel
 
+# Test
+
 class App:
     def __init__(self):
         pyxel.init(1024, 768)
