@@ -1,7 +1,5 @@
 import pyxel
 
-# Test
-
 class App:
     def __init__(self):
         pyxel.init(1024, 768)
@@ -16,11 +14,9 @@ class App:
         self.backgroundColor = 0
         pyxel.run(self.update, self.draw)
 
-#fuiefuhefzhefzh
-
     def update(self):
         
-        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT):
+        if pyxel.btn(pyxel.KEY_D):
             if self.rect_x < pyxel.width - 8 - 1:
                 self.rect_x += 1
         if pyxel.btn(pyxel.KEY_S):   
@@ -40,19 +36,19 @@ class App:
             
             
             
-        if pyxel.btn(pyxel.KEY_RIGHT):
-            if self.rect_xx < pyxel.width - 8 - 1:
-                self.rect_xx += 10
-        if pyxel.btn(pyxel.KEY_DOWN):   
-            if self.rect_yy < pyxel.height - 8- 1:
-                self.rect_yy += 10
-        if pyxel.btn(pyxel.KEY_LEFT):
-            if self.rect_xx > 0 + 1:
-                self.rect_xx += -10
-        if pyxel.btn(pyxel.KEY_UP):   
-            if self.rect_yy > 0 + 1:
-                self.rect_yy += -10
-                
+        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT):
+            self.rect_xx += 10
+            print("Rechts")
+        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT):
+            self.rect_xx += -10
+            print("Links")
+        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN):   
+            self.rect_yy += 10
+            print("Down")
+        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_UP):   
+            self.rect_yy += -10
+            print("Up")
+
                 
         if self.rect_xx >= self.rect_x - 8 and self.rect_xx < self.rect_x + 8 and self.rect_yy >= self.rect_y - 8 and self.rect_yy < self.rect_y + 8:
             self.backgroundColor = 8
