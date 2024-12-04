@@ -15,6 +15,11 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
+
+        left_x = pyxel.btnv(pyxel.GAMEPAD1_AXIS_LEFTX)
+        left_y = pyxel.btnv(pyxel.GAMEPAD1_AXIS_LEFTY)
+
+        print(left_x)
         
         if pyxel.btn(pyxel.KEY_D):
             if self.rect_x < pyxel.width - 8 - 1:
@@ -36,7 +41,7 @@ class App:
             
             
             
-        if pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT):
+        if pyxel.btn(pyxel.GAMEPAD1_AXIS_LEFTX >= 100):
             self.rect_xx += 10
             print("Rechts")
         if pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT):
