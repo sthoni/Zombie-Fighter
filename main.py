@@ -22,8 +22,9 @@ class App:
                 self.rect_x += -20
         if pyxel.btn(pyxel.KEY_S):   
             pass
-        if pyxel.btn(pyxel.KEY_W):   
-            pass
+        if pyxel.btnr(pyxel.KEY_W):   
+            self.rect_y -= 200
+
 
     def draw(self):
         pyxel.cls(0)
