@@ -17,7 +17,7 @@ class App:
     def update(self):
 
         if self.rect_y < 768 - 248:
-            self.rect_y *= 2
+            self.rect_y +=10
 
         if self.rect_yy < 768 - 248:
             self.rect_yy += 10
@@ -36,11 +36,11 @@ class App:
         
         if pyxel.btn(pyxel.KEY_RIGHT):
             if self.rect_xx < pyxel.width - 100:
-                self.rect_xx += 20
+                self.rect_xx += 10
             print("Rechts")
         if pyxel.btn(pyxel.KEY_LEFT):
             if self.rect_xx > 0:
-                self.rect_xx += -20
+                self.rect_xx += -10
             print("Links")
         if pyxel.btn(pyxel.KEY_DOWN):   
             pass
