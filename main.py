@@ -9,8 +9,6 @@ class App:
         self.rect_xx = 100
         self.rect_yy = 100
         
-        self.rect_color = 2
-        
         self.backgroundColor = 0
         pyxel.run(self.update, self.draw)
 
@@ -32,15 +30,14 @@ class App:
             pass
         if pyxel.btn(pyxel.KEY_W):   
             pass
-                
-        
+
         if pyxel.btn(pyxel.KEY_RIGHT):
             if self.rect_xx < pyxel.width - 100:
                 self.rect_xx += 10
             print("Rechts")
         if pyxel.btn(pyxel.KEY_LEFT):
             if self.rect_xx > 0:
-                self.rect_xx += -10
+                self.rect_xx -= 10
             print("Links")
         if pyxel.btn(pyxel.KEY_DOWN):   
             pass
@@ -55,7 +52,7 @@ class App:
         pyxel.cls(0)
         
         
-        pyxel.rect(self.rect_x, self.rect_y, 100, 248, self.rect_color)
+        pyxel.rect(self.rect_x, self.rect_y, 100, 248, 2)
         
         pyxel.rect(self.rect_xx, self.rect_yy, 100, 248, 7)
 
