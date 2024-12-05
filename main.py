@@ -33,7 +33,7 @@ class App:
         if pyxel.btn(pyxel.KEY_W):   
             pass
                 
-        
+        #white
         if pyxel.btn(pyxel.KEY_RIGHT):
             if self.rect_xx < pyxel.width - 100:
                 self.rect_xx += 10
