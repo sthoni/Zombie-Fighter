@@ -17,17 +17,17 @@ class App:
     def update(self):
 
         if self.rect_y < 768 - 248:
-            self.rect_y +=10
+            self.rect_y += 10
 
         if self.rect_yy < 768 - 248:
             self.rect_yy += 10
 
         if pyxel.btn(pyxel.KEY_D):
             if self.rect_x < pyxel.width - 100:
-                self.rect_x += 20
+                self.rect_x += 10
         if pyxel.btn(pyxel.KEY_A):
             if self.rect_x > 0:
-                self.rect_x += -20
+                self.rect_x += -10
         if pyxel.btn(pyxel.KEY_S):   
             pass
         if pyxel.btn(pyxel.KEY_W):   
