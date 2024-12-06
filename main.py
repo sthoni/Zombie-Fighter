@@ -1,4 +1,5 @@
 import pyxel
+import movement
 
 class App:
     def __init__(self):
@@ -9,22 +10,19 @@ class App:
         self.backgroundColor = 0
         pyxel.run(self.update, self.draw)
 
+        return self.rect_x
+
     def update(self):
 
         if self.rect_y < 768 - 248:
             self.rect_y +=10
 
-        if pyxel.btn(pyxel.KEY_D):
-            if self.rect_x < pyxel.width - 100:
-                self.rect_x += 20
-        if pyxel.btn(pyxel.KEY_A):
-            if self.rect_x > 0:
-                self.rect_x += -20
-        if pyxel.btn(pyxel.KEY_S):   
-            pass
-        if pyxel.btnr(pyxel.KEY_W):   
-            self.rect_y -= 200
+        self.rect_x = movement.movementP1(self.rect_x)
 
+        
+        
+
+    	
 
     def draw(self):
         pyxel.cls(0)
