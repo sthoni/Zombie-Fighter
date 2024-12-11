@@ -5,6 +5,7 @@ import time
 class App:
     def __init__(self):
         pyxel.init(1024, 768)
+        
         self.rect_x = 248
         self.rect_y = 50
 
@@ -23,11 +24,11 @@ class App:
         
         #Gravitation
 
-        self.velocity += self.gravity
-        self.rect_y += self.velocity
+        if self.rect_y + 248 <= pyxel.height:
+            self.velocity += self.gravity
+            self.rect_y += self.velocity
 
         if self.rect_y + 248 >= pyxel.height:  #248 ist die Größe vom Spieler auf der Y-Achse
-            self.rect_y = pyxel.height - 248
             self.velocity = 0
         
 
