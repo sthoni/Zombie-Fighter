@@ -14,8 +14,8 @@ class App:
         self.rect_x2 = 750
         self.rect_y2 = 50
 
-        self.velocity_v1 = 0
-        self.velocity_v2 = 0
+        self.velocity_p1 = 0
+        self.velocity_p2 = 0
         
         self.gravity = 1
 
@@ -31,9 +31,9 @@ class App:
         
         #Gravitation
 
-        self.rect_y1, self.velocity_v1 = movement.gravitation(self.rect_y1, pyxel.height, self.gravity, self.velocity_v1)
+        self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, pyxel.height, self.gravity, self.velocity_p1)
 
-        self.rect_y2, self.velocity_v2 = movement.gravitation(self.rect_y2, pyxel.height, self.gravity, self.velocity_v2)
+        self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, pyxel.height, self.gravity, self.velocity_p2)
 
 
         #Movement
