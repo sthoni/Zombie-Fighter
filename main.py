@@ -14,7 +14,9 @@ class App:
         self.rect_x2 = 750
         self.rect_y2 = 50
 
-        self.velocity = 0
+        self.velocity_v1 = 0
+        self.velocity_v2 = 0
+        
         self.gravity = 1
 
         self.p1IsPunching = False
@@ -29,9 +31,9 @@ class App:
         
         #Gravitation
 
-        self.rect_y1, self.velocity = movement.gravitation(self.rect_y1, pyxel.height, self.gravity, self.velocity)
+        self.rect_y1, self.velocity_v1 = movement.gravitation(self.rect_y1, pyxel.height, self.gravity, self.velocity_v1)
 
-        self.rect_y2, self.velocity = movement.gravitation(self.rect_y2, pyxel.height, self.gravity, self.velocity)
+        self.rect_y2, self.velocity_v2 = movement.gravitation(self.rect_y2, pyxel.height, self.gravity, self.velocity_v2)
 
 
         #Movement
@@ -49,7 +51,6 @@ class App:
             self.p1LastPunchTime = int(time.time())
         else: # Wir müssen Herr Thon fragen, ob das eine gute Lösung ist
             self.p1IsPunching = False
-
        
  
 
