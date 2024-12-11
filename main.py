@@ -6,8 +6,13 @@ class App:
     def __init__(self):
         pyxel.init(1024, 768)
         
-        self.rect_x = 248
-        self.rect_y = 50
+        # Player 1
+        self.rect_x1 = 250
+        self.rect_y1 = 50
+
+        # Player 2
+        self.rect_x2 = 750
+        self.rect_y2 = 50
 
         self.velocity = 0
         self.gravity = 1
@@ -24,22 +29,16 @@ class App:
         
         #Gravitation
 
-        if self.rect_y + 248 <= pyxel.height:
-            self.velocity += self.gravity
-            self.rect_y += self.velocity
+        self.rect_y1, self.velocity = movement.gravitation(self.rect_y1, pyxel.height, self.gravity, self.velocity)
 
-        if self.rect_y + 248 >= pyxel.height:  #248 ist die Größe vom Spieler auf der Y-Achse
-            self.velocity = 0
-        
+        self.rect_y2, self.velocity = movement.gravitation(self.rect_y2, pyxel.height, self.gravity, self.velocity)
 
 
         #Movement
 
-        self.rect_x = movement.movementP1(self.rect_x)
+        self.rect_x1 = movement.movementP1(self.rect_x1)
 
-        if self.rect_y == 768 - 248:
-            self.rect_y = movement.jump(self.rect_y)
-
+        self.rect_x2 = movement.movementP2(self.rect_x2)
 
 
         # Schlag
@@ -51,18 +50,19 @@ class App:
         else: # Wir müssen Herr Thon fragen, ob das eine gute Lösung ist
             self.p1IsPunching = False
 
-
-            
+       
  
 
     def draw(self):
         pyxel.cls(0)
         
         
-        pyxel.rect(self.rect_x, self.rect_y, 100, 248, 2)
+        pyxel.rect(self.rect_x1, self.rect_y1, 100, 248, 2)
+
+        pyxel.rect(self.rect_x2, self.rect_y2, 100, 248, 2)
 
         if self.p1IsPunching:
-            pyxel.rect(self.rect_x + 160, self.rect_y + 5, 50,50, 8)
+            pyxel.rect(self.rect_x1 + 160, self.rect_y1 + 5, 50,50, 8)
         
 
 App()
