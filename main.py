@@ -20,7 +20,7 @@ class App:
         self.gravity = 1
 
         self.p1IsPunching = False
-        self.p1LastPunchTime = 0 # Zeit vom letzten Schlag
+        self.p1LastPunchTime = time.time() - 3 # Zeit vom letzten Schlag
         self.p1CurrentPunchTime = 0 # Zeit vom jetzt versuchten Schlag
 
         self.backgroundColor = 0
@@ -45,10 +45,10 @@ class App:
 
         # Schlag
 
-        if pyxel.btnp(pyxel.KEY_SPACE) and int(time.time()) - self.p1LastPunchTime >= 1:
-            print("Differenz: " , int(time.time()) - self.p1LastPunchTime)
+        if pyxel.btnp(pyxel.KEY_SPACE) and time.time() - self.p1LastPunchTime >= 0.5:
+            print("Differenz: " , time.time() - self.p1LastPunchTime)
             self.p1IsPunching = True
-            self.p1LastPunchTime = int(time.time())
+            self.p1LastPunchTime = time.time()
         else: # Wir müssen Herr Thon fragen, ob das eine gute Lösung ist
             self.p1IsPunching = False
        
