@@ -4,11 +4,11 @@ import time
 
 class App:
     def __init__(self):
-        pyxel.init(1024, 768)
+        pyxel.init(180, 100)
         
         # Player 1
-        self.rect_x1 = 250
-        self.rect_y1 = 50
+        self.rect_x1 = 60
+        self.rect_y1 = 10
 
         self.velocity_p1 = 0
 
@@ -16,8 +16,8 @@ class App:
         self.p1LastPunchTime = time.time() - 3 # Zeit vom letzten Schlag
 
         # Player 2
-        self.rect_x2 = 750
-        self.rect_y2 = 50
+        self.rect_x2 = 150
+        self.rect_y2 = 10
 
         self.velocity_p2 = 0
         
@@ -48,7 +48,7 @@ class App:
 
         # Schlag
 
-        self.p1IsPunching, self.p1LastPunchTime =  movement.punch_p1(self.p1IsPunching, self.p1LastPunchTime)
+        self.p1IsPunching, self.p1LastPunchTime =  movement.punch_p1(self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1)
 
         self.p2IsPunching, self.p2LastPunchTime =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime)
         
@@ -56,14 +56,16 @@ class App:
         pyxel.cls(0)
         
         
-        pyxel.rect(self.rect_x1, self.rect_y1, 100, 248, 2)
+        pyxel.rect(self.rect_x1, self.rect_y1, 32, 32, 2)
 
-        pyxel.rect(self.rect_x2, self.rect_y2, 100, 248, 2)
+        pyxel.rect(self.rect_x2, self.rect_y2, 32, 32, 2)
 
         if self.p1IsPunching:
-            pyxel.rect(self.rect_x1 + 160, self.rect_y1 + 5, 50, 50, 8)
+            pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8)
+            pyxel.rect(self.rect_x1 - 28, self.rect_y1 + 5, 20, 20, 8)
         if self.p2IsPunching:
-            pyxel.rect(self.rect_x2 + 160, self.rect_y2 + 5, 50, 50, 8)
+            pyxel.rect(self.rect_x2 + 40, self.rect_y2 + 5, 20, 20, 8)
+            pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
         
 
 App()
