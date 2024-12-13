@@ -5,19 +5,18 @@ import time
 # Movement
 def movementP1(xPos):
     if pyxel.btn(pyxel.KEY_D):
-        xPos += 10
-
+        xPos += 3
     elif pyxel.btn(pyxel.KEY_A):
-        xPos -= 10
+        xPos -= 3
 
     return xPos
 
 def movementP2(xPos):
     if pyxel.btn(pyxel.KEY_RIGHT):
-        xPos += 10
+        xPos += 3
 
     elif pyxel.btn(pyxel.KEY_LEFT):
-        xPos -= 10
+        xPos -= 3
 
     return xPos
 
