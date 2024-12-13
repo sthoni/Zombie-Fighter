@@ -1,22 +1,23 @@
 import pyxel
 import time
 
+speed = 4
 
 # Movement
 def movementP1(xPos):
     if pyxel.btn(pyxel.KEY_D):
-        xPos += 3
+        xPos += speed 
     elif pyxel.btn(pyxel.KEY_A):
-        xPos -= 3
+        xPos -= speed 
 
     return xPos
 
 def movementP2(xPos):
     if pyxel.btn(pyxel.KEY_RIGHT):
-        xPos += 3
+        xPos += speed
 
     elif pyxel.btn(pyxel.KEY_LEFT):
-        xPos -= 3
+        xPos -= speed 
 
     return xPos
 
