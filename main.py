@@ -21,8 +21,10 @@ class App:
 
         self.velocity_p2 = 0
         
-        self.gravity = 1
+        #Gravity
+        self.gravity = 0.75
 
+        #Punch
         self.p2IsPunching = False
         self.p2LastPunchTime = time.time() - 3 # Zeit vom letzten Schlag
 
@@ -32,18 +34,23 @@ class App:
 
     def update(self):
         
-        #Gravitation
+        # Gravitation
 
-        self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, pyxel.height, self.gravity, self.velocity_p1)
+        self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
 
-        self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, pyxel.height, self.gravity, self.velocity_p2)
+        self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
 
 
-        #Movement
+        # Movement
 
         self.rect_x1 = movement.movementP1(self.rect_x1)
 
         self.rect_x2 = movement.movementP2(self.rect_x2)
+
+        # Jump
+
+        if pyxel.btnp(pyxel.KEY_W):
+            self.rect_y1 -= 35
 
 
         # Schlag

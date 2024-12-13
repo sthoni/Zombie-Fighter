@@ -33,7 +33,7 @@ def jump(yPos):
 
 
 #Gravitation
-def gravitation(rect_y, height, gravity, velocity):
+def gravitation(rect_y, gravity, velocity):
     if rect_y + 45 <= 100:
         velocity += gravity
         rect_y += velocity
