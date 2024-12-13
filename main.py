@@ -10,6 +10,8 @@ class App:
         self.rect_x1 = 60
         self.rect_y1 = 10
 
+        self.hp1 = 1000
+
         self.velocity_p1 = 0
 
         self.p1IsPunching = False
@@ -18,6 +20,8 @@ class App:
         # Player 2
         self.rect_x2 = 150
         self.rect_y2 = 10
+
+        self.hp2 = 1000
 
         self.velocity_p2 = 0
         
@@ -55,7 +59,7 @@ class App:
 
         # Schlag
 
-        self.p1IsPunching, self.p1LastPunchTime =  movement.punch_p1(self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1)
+        self.p1IsPunching, self.p1LastPunchTime, self.hp2 =  movement.punch_p1(self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
 
         self.p2IsPunching, self.p2LastPunchTime =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime)
         
