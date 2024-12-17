@@ -35,6 +35,8 @@ class App:
         self.backgroundColor = 0
         pyxel.run(self.update, self.draw)
 
+        self.new_hp_bar = 35
+
 
     def update(self):
         
@@ -61,6 +63,9 @@ class App:
 
         self.p1IsPunching, self.p1LastPunchTime, self.hp2 =  movement.punch_p1(self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
 
+        
+
+
         self.p2IsPunching, self.p2LastPunchTime =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime)
         
     def draw(self):
@@ -71,9 +76,14 @@ class App:
 
         pyxel.rect(self.rect_x2, self.rect_y2, 32, 32, 2)
 
+        # HP bar for Player 2
+        pyxel.rect(120, 7, 1000 / 22, 5, 8)
+        pyxel.rect(120, 7, self.hp2 / 22, 5, 3)
+
         if self.p1IsPunching:
             pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8)
             pyxel.rect(self.rect_x1 - 28, self.rect_y1 + 5, 20, 20, 8)
+
         if self.p2IsPunching:
             pyxel.rect(self.rect_x2 + 40, self.rect_y2 + 5, 20, 20, 8)
             pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
