@@ -66,7 +66,7 @@ class App:
         
 
 
-        self.p2IsPunching, self.p2LastPunchTime =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime)
+        self.p2IsPunching, self.p2LastPunchTime =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x1, self.hp1)
         
     def draw(self):
         pyxel.cls(0)

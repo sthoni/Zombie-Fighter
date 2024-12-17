@@ -55,6 +55,9 @@ def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunc
             hp2 -= 80
             print(hp2)
 
+        if collision(player_x - 68, enemy_x):
+            print("Collsion")
+
     
     else: # Wir müssen Herr Thon fragen, ob das eine gute Lösung ist aber ich glaube ja weil es nur einmal aufgerufen wird (1 Frame)
         p_is_punching = False
@@ -64,10 +67,14 @@ def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunc
 
 
 #Gleiche Methode aber mit Taste 5 auf der Tastatur Rechts für Spieler 2
-def punch_p2(p_is_punching, p_last_punch_time):
+def punch_p2(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2):
     if pyxel.btnp(pyxel.KEY_KP_5) and time.time() - p_last_punch_time >= 0.5:
         p_is_punching = True
         p_last_punch_time = time.time()
+
+        if collision(player_x, enemy_x):
+            hp2 - 80
+            print("fuhebhfbh")
 
     else: 
         p_is_punching = False
