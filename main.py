@@ -17,6 +17,8 @@ class App:
         self.p1IsPunching = False
         self.p1LastPunchTime = time.time() - 3 # Zeit vom letzten Schlag
 
+        self.p1richtung = "rechts"
+
         # Player 2
         self.rect_x2 = 150
         self.rect_y2 = 10
@@ -24,6 +26,9 @@ class App:
         self.hp2 = 1000
 
         self.velocity_p2 = 0
+
+
+        self.p2richtung = "links"
         
         #Gravity
         self.gravity = 0.75
@@ -49,9 +54,9 @@ class App:
 
         # Movement
 
-        self.rect_x1 = movement.movementP1(self.rect_x1)
+        self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung)
 
-        self.rect_x2 = movement.movementP2(self.rect_x2)
+        self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung)
 
         # Jump
 
@@ -71,10 +76,27 @@ class App:
     def draw(self):
         pyxel.cls(0)
         
-        
+        #Spieler 1
+
         pyxel.rect(self.rect_x1, self.rect_y1, 32, 32, 2)
 
+        if self.p1richtung == "rechts":
+            pyxel.rect(self.rect_x1 +30, self.rect_y1 + 4, 2,2 ,0)
+
+        if self.p1richtung == "links":
+            pyxel.rect(self.rect_x1, self.rect_y1 + 4, 2,2 ,0)
+
+
+        #Spieler 2
+
         pyxel.rect(self.rect_x2, self.rect_y2, 32, 32, 2)
+
+        if self.p2richtung == "rechts":
+            pyxel.rect(self.rect_x2 +30, self.rect_y2 + 4, 2,2 ,0)
+
+        if self.p2richtung == "links":
+            pyxel.rect(self.rect_x2 , self.rect_y2 + 4, 2,2 ,0)
+
 
         # HP bar for Player 2
         pyxel.rect(120, 7, 1000 / 22, 5, 8)

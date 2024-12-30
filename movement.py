@@ -4,22 +4,29 @@ import time
 speed = 4
 
 # Movement
-def movementP1(xPos):
+def movementP1(xPos, richtung):
     if pyxel.btn(pyxel.KEY_D):
-        xPos += speed 
+            if xPos <= 180 - 32:
+                xPos += speed 
+                richtung = "rechts"
     elif pyxel.btn(pyxel.KEY_A):
-        xPos -= speed 
+        if xPos >= 0:
+            xPos -= speed 
+            richtung = "links"
 
-    return xPos
+    return xPos, richtung
 
-def movementP2(xPos):
+def movementP2(xPos, richtung):
     if pyxel.btn(pyxel.KEY_RIGHT):
-        xPos += speed
-
+        if xPos <= 180 - 32:
+            xPos += speed
+            richtung = "rechts"
     elif pyxel.btn(pyxel.KEY_LEFT):
-        xPos -= speed 
+        if xPos >= 0:
+            xPos -= speed 
+            richtung = "links"
 
-    return xPos
+    return xPos, richtung
 
 
 #Jump aber es klappt noch nicht
