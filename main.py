@@ -55,8 +55,8 @@ class App:
 
         # Jump
 
-        if pyxel.btnp(pyxel.KEY_W):
-            self.rect_y1 -= 35
+#        if pyxel.btnp(pyxel.KEY_W):
+#            self.rect_y1 -= 35
 
 
         # Schlag
