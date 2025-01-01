@@ -15,9 +15,11 @@ class App:
         self.velocity_p1 = 0
 
         self.p1IsPunching = False
-        self.p1LastPunchTime = time.time() - 3 # Zeit vom letzten Schlag
+        self.p1LastPunchTime = time.time()  # Zeit vom letzten Schlag
 
         self.p1richtung = "rechts"
+
+        self.p1_indikator = 3
 
         # Player 2
         self.rect_x2 = 150
@@ -29,13 +31,15 @@ class App:
 
 
         self.p2richtung = "links"
+
+        self.p2_indikator = 3
         
         #Gravity
         self.gravity = 0.75
 
         #Punch
         self.p2IsPunching = False
-        self.p2LastPunchTime = time.time() - 3 # Zeit vom letzten Schlag
+        self.p2LastPunchTime = time.time()  # Zeit vom letzten Schlag
 
         self.backgroundColor = 0
         pyxel.run(self.update, self.draw)
@@ -71,6 +75,18 @@ class App:
         self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
         
 
+        if time.time() - self.p1LastPunchTime >= 0.5:
+            self.p1_indikator = 3
+        else:
+            self.p1_indikator = 8
+
+
+        if time.time() - self.p2LastPunchTime >= 0.5:
+            self.p2_indikator = 3
+        else:
+            self.p2_indikator = 8
+
+
 
     def draw(self):
         pyxel.cls(0)
@@ -88,7 +104,7 @@ class App:
 
         #Spieler 2
 
-        pyxel.rect(self.rect_x2, self.rect_y2, 32, 32, 2)
+        pyxel.rect(self.rect_x2, self.rect_y2, 32, 32, 1)
 
         if self.p2richtung == "rechts":
             pyxel.rect(self.rect_x2 +30, self.rect_y2 + 4, 2,2 ,0)
@@ -97,13 +113,19 @@ class App:
             pyxel.rect(self.rect_x2 , self.rect_y2 + 4, 2,2 ,0)
 
 
-        # HP bar for Player 2
+        # HP bar for Player 1
         pyxel.rect(12, 7, 1000 / 22, 5, 8)
         pyxel.rect(12, 7, self.hp1 / 22, 5, 3)
+
+        # Cooldown indikator p1
+        pyxel.rect(12, 20, 5,5, self.p1_indikator)
 
         # HP bar for Player 2
         pyxel.rect(120, 7, 1000 / 22, 5, 8)
         pyxel.rect(120, 7, self.hp2 / 22, 5, 3)
+
+        # Cooldown indikator p2
+        pyxel.rect(120, 20, 5,5, self.p2_indikator)
 
         if self.p1IsPunching:
             pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8)
