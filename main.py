@@ -68,11 +68,10 @@ class App:
 
         self.p1IsPunching, self.p1LastPunchTime, self.hp2 =  movement.punch_p1(self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
 
+        self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
         
 
 
-        self.p2IsPunching, self.p2LastPunchTime =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x1, self.hp1)
-        
     def draw(self):
         pyxel.cls(0)
         
@@ -97,6 +96,10 @@ class App:
         if self.p2richtung == "links":
             pyxel.rect(self.rect_x2 , self.rect_y2 + 4, 2,2 ,0)
 
+
+        # HP bar for Player 2
+        pyxel.rect(12, 7, 1000 / 22, 5, 8)
+        pyxel.rect(12, 7, self.hp1 / 22, 5, 3)
 
         # HP bar for Player 2
         pyxel.rect(120, 7, 1000 / 22, 5, 8)

@@ -58,12 +58,15 @@ def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunc
         p_is_punching = True #Aktiviert die Hitbox
         p_last_punch_time = time.time() # Letzter Schlag (Zeit) wird auf jetzt gesetzt
 
-        if collision(player_x, enemy_x):
+        if collision_rechts(player_x, enemy_x):
             hp2 -= 80
-            print(hp2)
+            print("P2: " , hp2)
+            print("Rechts")
 
-        if collision(player_x - 68, enemy_x):
-            print("Collsion")
+        if collision_links(player_x, enemy_x):
+            hp2 -= 80
+            print("P2: " , hp2)
+            print("Links")
 
     
     else: # Wir müssen Herr Thon fragen, ob das eine gute Lösung ist aber ich glaube ja weil es nur einmal aufgerufen wird (1 Frame)
@@ -74,22 +77,30 @@ def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunc
 
 
 #Gleiche Methode aber mit Taste 5 auf der Tastatur Rechts für Spieler 2
-def punch_p2(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2):
+def punch_p2(p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
     if pyxel.btnp(pyxel.KEY_KP_5) and time.time() - p_last_punch_time >= 0.5:
         p_is_punching = True
         p_last_punch_time = time.time()
 
-        if collision(player_x, enemy_x):
-            hp2 - 80
-            print("fuhebhfbh")
+        if collision_rechts(player_x, enemy_x):
+            hp1 -= 80
+            print("P1: ", hp1)
+            print("Rechts")
+
+        if collision_links(player_x, enemy_x):
+            hp1 -= 80
+            print("P1: " , hp1)
+            print("Links")
 
     else: 
         p_is_punching = False
 
-    return p_is_punching, p_last_punch_time
+    return p_is_punching, p_last_punch_time, hp1
 
-def collision(player_x, enemy_x):
+def collision_rechts(player_x, enemy_x):
     if enemy_x >= player_x + 40 and enemy_x <= player_x + 60 or enemy_x < player_x + 40 and enemy_x + 32 > player_x + 60:
-        print("Hit")
         return True
     
+def collision_links(player_x, enemy_x):
+    if enemy_x >= player_x - 28 and enemy_x <= player_x -8 or enemy_x < player_x -28 and enemy_x + 32 > player_x -28:
+        return True
