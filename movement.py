@@ -60,7 +60,7 @@ def gravitation(rect_y, velocity, gravity):
 
 #Attacken
 def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunching: p1_is_punching (Für Hitbox)   p_last_punch_time: Cooldoown Zeit (Letzter Schlag)
-    if pyxel.btnp(pyxel.KEY_G) and time.time() - p_last_punch_time >= 0.5: # Geguckt ob G gedrückt wird und Cooldown
+    if pyxel.btnp(pyxel.KEY_SPACE) and time.time() - p_last_punch_time >= 0.5: # Geguckt ob G gedrückt wird und Cooldown
         p_is_punching = True #Aktiviert die Hitbox
         p_last_punch_time = time.time() # Letzter Schlag (Zeit) wird auf jetzt gesetzt
 
@@ -84,7 +84,7 @@ def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunc
 
 #Gleiche Methode aber mit Taste 5 auf der Tastatur Rechts für Spieler 2
 def punch_p2(p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
-    if pyxel.btnp(pyxel.KEY_KP_5) and time.time() - p_last_punch_time >= 0.5:
+    if pyxel.btnp(pyxel.KEY_KP_0) and time.time() - p_last_punch_time >= 0.5:
         p_is_punching = True
         p_last_punch_time = time.time()
 

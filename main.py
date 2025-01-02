@@ -23,6 +23,8 @@ class App:
 
         self.p1_indikator = 3
 
+        self.state_player_1 = str
+
         # Player 2
         self.rect_x2 = 150
         self.rect_y2 = 10
@@ -43,12 +45,12 @@ class App:
 
         self.p2_last_jump_time = time.time()
 
-
-
         self.backgroundColor = 0
         pyxel.run(self.update, self.draw)
 
         self.new_hp_bar = 35
+
+        self.state_player_2 = str
 
 
     def update(self):
@@ -61,7 +63,6 @@ class App:
 
 
         # Movement
-
         self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung)
 
         self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung)
@@ -78,11 +79,23 @@ class App:
         if pyxel.btn(pyxel.KEY_UP):
             self.rect_y2, self.p2_last_jump_time = movement.jump(self.rect_y2, self.p2_last_jump_time)
 
+        # Block
+        if pyxel.btn(pyxel.KEY_CTRL):
+            self.state_player_1 = "blocking"
+        else:
+            self.state_player_1 = "normal"
+
+        if pyxel.btn(pyxel.KEY_KP_5):
+            self.state_player_2 = "blocking"
+        else:
+            self.state_player_2 = "normal"
+        
         # Schlag
+        if self.state_player_2 == "normal" and self.state_player_1 == "normal":
+            self.p1IsPunching, self.p1LastPunchTime, self.hp2 =  movement.punch_p1(self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
 
-        self.p1IsPunching, self.p1LastPunchTime, self.hp2 =  movement.punch_p1(self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
-
-        self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
+        if self.state_player_1 == "normal" and self.state_player_2 == "normal":
+            self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
         
 
         if time.time() - self.p1LastPunchTime >= 0.5:
@@ -95,8 +108,6 @@ class App:
             self.p2_indikator = 3
         else:
             self.p2_indikator = 8
-
-
 
     def draw(self):
         pyxel.cls(0)
@@ -136,6 +147,17 @@ class App:
 
         # Cooldown indikator p2
         pyxel.rect(120, 20, 5,5, self.p2_indikator)
+
+        # Block indikator
+        if self.state_player_1 == "blocking":
+            pyxel.rect(self.rect_x1 + 9, self.rect_y1 + 9, 13, 13, 13)
+
+        if self.state_player_2 == "blocking":
+            pyxel.rect(self.rect_x2 + 9, self.rect_y2 + 9, 13, 13, 13)
+
+
+
+
 
         if self.p1IsPunching:
             pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8)
