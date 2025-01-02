@@ -30,17 +30,25 @@ def movementP2(xPos, richtung):
 
 
 #Jump aber es klappt noch nicht
-def jump(yPos):
-    jumpVelocity = 0
+#def jump(yPos):
+#    jumpVelocity = 0
+#
+#    if pyxel.btn(pyxel.KEY_W):
+#        yPos -= jumpVelocity
+#
+#    return yPos
 
-    if pyxel.btn(pyxel.KEY_W):
-        yPos -= jumpVelocity
-
-    return yPos
+def jump(rect_y, last_jump_time):
+    
+    if rect_y == 59.5 and time.time() - last_jump_time > 0.5:
+        last_jump_time = time.time()
+        rect_y -= 25
+    
+    return rect_y, last_jump_time
 
 
 #Gravitation
-def gravitation(rect_y, gravity, velocity):
+def gravitation(rect_y, velocity, gravity):
     if rect_y + 45 <= 100:
         velocity += gravity
         rect_y += velocity
@@ -49,8 +57,6 @@ def gravitation(rect_y, gravity, velocity):
         velocity = 0
 
     return rect_y, velocity
-
-
 
 #Attacken
 def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunching: p1_is_punching (Für Hitbox)   p_last_punch_time: Cooldoown Zeit (Letzter Schlag)

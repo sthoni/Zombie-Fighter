@@ -17,6 +17,8 @@ class App:
         self.p1IsPunching = False
         self.p1LastPunchTime = time.time()  # Zeit vom letzten Schlag
 
+        self.p1_last_jump_time = time.time()
+
         self.p1richtung = "rechts"
 
         self.p1_indikator = 3
@@ -34,12 +36,14 @@ class App:
 
         self.p2_indikator = 3
         
-        #Gravity
         self.gravity = 0.75
 
-        #Punch
         self.p2IsPunching = False
         self.p2LastPunchTime = time.time()  # Zeit vom letzten Schlag
+
+        self.p2_last_jump_time = time.time()
+
+
 
         self.backgroundColor = 0
         pyxel.run(self.update, self.draw)
@@ -63,10 +67,16 @@ class App:
         self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung)
 
         # Jump
+        if 62 > self.rect_y1 > 55:
+            self.rect_y1 = 59.5
+        if 62 > self.rect_y2 > 55:
+            self.rect_y2 = 59.5
 
-#        if pyxel.btnp(pyxel.KEY_W):
-#            self.rect_y1 -= 35
+        if pyxel.btn(pyxel.KEY_W):
+            self.rect_y1, self.p1_last_jump_time = movement.jump(self.rect_y1, self.p1_last_jump_time)
 
+        if pyxel.btn(pyxel.KEY_UP):
+            self.rect_y2, self.p2_last_jump_time = movement.jump(self.rect_y2, self.p2_last_jump_time)
 
         # Schlag
 
