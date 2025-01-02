@@ -46,15 +46,20 @@ class App:
         self.p2_last_jump_time = time.time()
 
         self.backgroundColor = 0
-        pyxel.run(self.update, self.draw)
+        
 
         self.new_hp_bar = 35
 
         self.state_player_2 = str
 
 
+        pyxel.load("res.pyxres")  # Ressourcen-Datei laden
+        pyxel.playm(0,0, loop= True)
+
+        pyxel.run(self.update, self.draw)
+
+
     def update(self):
-        
         # Gravitation
 
         self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
@@ -166,6 +171,10 @@ class App:
         if self.p2IsPunching:
             pyxel.rect(self.rect_x2 + 40, self.rect_y2 + 5, 20, 20, 8)
             pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
+
+        pyxel.rect(70,10, 16,16,10)
+        pyxel.blt(70, 10, 0, 0, 0, 16, 16, 14)  
+        
         
 
 App()
