@@ -54,7 +54,9 @@ class App:
 
 
         pyxel.load("res.pyxres")  # Ressourcen-Datei laden
-        pyxel.playm(0,0, loop= True)
+        pyxel.playm(0, loop= True)
+
+        self.game_over_music = False
 
         pyxel.run(self.update, self.draw)
 
@@ -174,6 +176,25 @@ class App:
 
         pyxel.rect(70,10, 16,16,10)
         pyxel.blt(70, 10, 0, 0, 0, 16, 16, 14)  
+
+        if self.hp1 <= 0 or self.hp2 <= 0:
+            pyxel.rect(0,0, 180, 100, 0)
+            pyxel.text(70,30,"Game Over", 8)
+
+
+            if self.hp1 <= 0:
+                winner = "Player 2 wins"
+            else:
+                winner = "Player 1 wins"
+
+            pyxel.text(65,50,winner, 8)
+            
+            
+
+            if not self.game_over_music:
+                self.game_over_music = True
+                pyxel.stop()
+                pyxel.playm(1, loop= False)
         
         
 
