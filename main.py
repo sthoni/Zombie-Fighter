@@ -54,7 +54,7 @@ class App:
 
 
         pyxel.load("res.pyxres")  # Ressourcen-Datei laden
-        pyxel.playm(0, loop= True)
+        #pyxel.playm(0, loop= True)
 
         self.game_over_music = False
 
@@ -119,6 +119,8 @@ class App:
     def draw(self):
         pyxel.cls(0)
         
+        pyxel.blt(0,0,2, 0, 0, 180, 100)
+
         #Spieler 1
 
         pyxel.rect(self.rect_x1, self.rect_y1, 32, 32, 2)
