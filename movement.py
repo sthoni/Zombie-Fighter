@@ -59,18 +59,24 @@ def gravitation(rect_y, velocity, gravity):
     return rect_y, velocity
 
 #Attacken
-def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunching: p1_is_punching (Für Hitbox)   p_last_punch_time: Cooldoown Zeit (Letzter Schlag)
+def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunching: p1_is_punching (Für Hitbox)   p_last_punch_time: Cooldoown Zeit (Letzter Schlag)
     if pyxel.btnp(pyxel.KEY_SPACE) and time.time() - p_last_punch_time >= 0.5: # Geguckt ob G gedrückt wird und Cooldown
         p_is_punching = True #Aktiviert die Hitbox
         p_last_punch_time = time.time() # Letzter Schlag (Zeit) wird auf jetzt gesetzt
 
         if collision_rechts(player_x, enemy_x):
-            hp2 -= 80
+            if self.state_player_2 == "normal" and self.state_player_1 == "normal":
+                hp2 -= 80
+            else:
+                hp2 -= 10
             print("P2: " , hp2)
             print("Rechts")
 
         if collision_links(player_x, enemy_x):
-            hp2 -= 80
+            if self.state_player_2 == "normal" and self.state_player_1 == "normal":
+                hp2 -= 80
+            else:
+                hp2 -= 10
             print("P2: " , hp2)
             print("Links")
 
@@ -83,18 +89,24 @@ def punch_p1(p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunc
 
 
 #Gleiche Methode aber mit Taste 5 auf der Tastatur Rechts für Spieler 2
-def punch_p2(p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
+def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
     if pyxel.btnp(pyxel.KEY_KP_0) and time.time() - p_last_punch_time >= 0.5:
         p_is_punching = True
         p_last_punch_time = time.time()
 
         if collision_rechts(player_x, enemy_x):
-            hp1 -= 80
+            if self.state_player_1 == "normal" and self.state_player_2 == "normal":
+                hp1 -= 80
+            else:
+                hp1 -= 10
             print("P1: ", hp1)
             print("Rechts")
 
         if collision_links(player_x, enemy_x):
-            hp1 -= 80
+            if self.state_player_1 == "normal" and self.state_player_2 == "normal":
+                hp1 -= 80
+            else:
+                hp1 -= 10
             print("P1: " , hp1)
             print("Links")
 
