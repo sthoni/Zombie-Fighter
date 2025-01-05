@@ -77,8 +77,10 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
         if collision_links(player_x, enemy_x):
             if self.state_player_2 == "normal" and self.state_player_1 == "normal":
                 hp2 -= 80
+                pyxel.play(3,51)
             elif self.state_player_2 == "blocking" and self.state_player_1 == "normal":
                 hp2 -= 10
+                pyxel.play(3,51)
             print("P2: " , hp2)
             print("Links")
 
@@ -94,22 +96,26 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
 def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
     if pyxel.btnp(pyxel.KEY_KP_0) and time.time() - p_last_punch_time >= 0.5:
         p_is_punching = True
-        pyxel.play(2,50)
+        
         p_last_punch_time = time.time()
 
         if collision_rechts(player_x, enemy_x):
             if self.state_player_1 == "normal" and self.state_player_2 == "normal":
                 hp1 -= 80
+                pyxel.play(2,50)
             elif self.state_player_1 == "blocking" and self.state_player_2 == "normal":
                 hp1 -= 10
+                pyxel.play(2,50)
             print("P1: ", hp1)
             print("Rechts")
 
         if collision_links(player_x, enemy_x):
             if self.state_player_1 == "normal" and self.state_player_2 == "normal":
                 hp1 -= 80
+                pyxel.play(2,50)
             elif self.state_player_1 == "blocking" and self.state_player_2 == "normal":
                 hp1 -= 10
+                pyxel.play(2,50)
             print("P1: " , hp1)
             print("Links")
 
