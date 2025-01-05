@@ -54,7 +54,7 @@ class App:
 
 
         pyxel.load("res.pyxres")  # Ressourcen-Datei laden
-        #pyxel.playm(0, loop= True)
+        pyxel.playm(0, loop= True)
 
         self.game_over_music = False
 
@@ -194,6 +194,7 @@ class App:
             if not self.game_over_music:
                 self.game_over_music = True
                 pyxel.stop()
+                pyxel.play(3,49)
                 pyxel.playm(1, loop= False)
         
         
