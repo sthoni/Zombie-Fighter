@@ -42,7 +42,8 @@ def jump(rect_y, last_jump_time):
     
     if rect_y == 59.5 and time.time() - last_jump_time > 0.5:
         last_jump_time = time.time()
-        rect_y -= 25
+        rect_y -= 0.1
+
     
     return rect_y, last_jump_time
 
@@ -68,6 +69,7 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
             if self.state_player_2 == "normal" and self.state_player_1 == "normal":
                 hp2 -= 80
                 pyxel.play(3,51)
+                self.rect_x2 += 15
             elif self.state_player_2 == "blocking" and self.state_player_1 == "normal":
                 hp2 -= 10
                 pyxel.play(3,51)
@@ -78,6 +80,7 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
             if self.state_player_2 == "normal" and self.state_player_1 == "normal":
                 hp2 -= 80
                 pyxel.play(3,51)
+                self.rect_x2 -= 15
             elif self.state_player_2 == "blocking" and self.state_player_1 == "normal":
                 hp2 -= 10
                 pyxel.play(3,51)
@@ -88,7 +91,7 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
     else: # Wir müssen Herr Thon fragen, ob das eine gute Lösung ist aber ich glaube ja weil es nur einmal aufgerufen wird (1 Frame)
         p_is_punching = False
     
-    return p_is_punching, p_last_punch_time, hp2 #Return damit die Variable in main.py verändert wird sonst geht es nicht
+    return p_is_punching, p_last_punch_time, hp2, self #Return damit die Variable in main.py verändert wird sonst geht es nicht
 
 
 
