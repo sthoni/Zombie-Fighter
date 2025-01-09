@@ -1,48 +1,50 @@
 import pyxel
 import time
 
-speed = 4
-
 # Movement
-def movementP1(xPos, richtung):
+def movementP1(xPos, richtung, state, speed, speed_block):
+    
     if pyxel.btn(pyxel.KEY_D):
             if xPos <= 180 - 32:
-                xPos += speed 
+                if state == "blocking":
+                    xPos += speed_block
+                else:
+                    xPos += speed 
                 richtung = "rechts"
     elif pyxel.btn(pyxel.KEY_A):
         if xPos >= 0:
-            xPos -= speed 
+            if state == "blocking":
+                xPos -= speed_block
+            else:
+                xPos -= speed 
             richtung = "links"
 
     return xPos, richtung
 
-def movementP2(xPos, richtung):
+def movementP2(xPos, richtung, state, speed, speed_block):
+    print(state)
     if pyxel.btn(pyxel.KEY_RIGHT):
         if xPos <= 180 - 32:
-            xPos += speed
+            if state == "blocking":
+                xPos += speed_block
+            if state == "normal":
+                xPos += speed
             richtung = "rechts"
     elif pyxel.btn(pyxel.KEY_LEFT):
         if xPos >= 0:
-            xPos -= speed 
+            if state == "normal":
+                xPos -= speed 
+            else:
+                xPos -= speed_block
             richtung = "links"
 
     return xPos, richtung
-
-
-#Jump aber es klappt noch nicht
-#def jump(yPos):
-#    jumpVelocity = 0
-#
-#    if pyxel.btn(pyxel.KEY_W):
-#        yPos -= jumpVelocity
-#
-#    return yPos
 
 def jump(rect_y, last_jump_time):
     
     if rect_y == 59.5 and time.time() - last_jump_time > 0.5:
         last_jump_time = time.time()
-        rect_y -= 0.1
+        rect_y -= 20
 
     
     return rect_y, last_jump_time

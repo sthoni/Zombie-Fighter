@@ -6,53 +6,32 @@ class App:
     def __init__(self):
         pyxel.init(180, 100)
         
-        # Player 1
-        self.rect_x1 = 60
-        self.rect_y1 = 10
+        # Players
+        self.rect_x1, self.rect_x2 = 60, 150
+        self.rect_y1, self.rect_y2 = 10, 10
 
-        self.hp1 = 1000
+        self.hp1, self.hp2 = 1000, 1000
 
-        self.velocity_p1 = 0
+        self.velocity_p1, self.velocity_p2 = 0, 0
 
-        self.p1IsPunching = False
-        self.p1LastPunchTime = time.time()  # Zeit vom letzten Schlag
+        self.p1_indikator, self.p2_indikator = 3, 3
 
-        self.p1_last_jump_time = time.time()
+        self.p1IsPunching, self.p2IsPunching = False, False
+        self.p1LastPunchTime, self.p2LastPunchTime = time.time(), time.time()  # Zeit vom letzten Schlag
 
-        self.p1richtung = "rechts"
+        self.p1_last_jump_time, self.p2_last_jump_time = time.time(), time.time()
 
-        self.p1_indikator = 3
+        self.p1richtung,self.p2richtung = "links", "rechts"
 
-        self.state_player_1 = str
+        self.state_player_1, self.state_player_2 = str, str
 
-        # Player 2
-        self.rect_x2 = 150
-        self.rect_y2 = 10
-
-        self.hp2 = 1000
-
-        self.velocity_p2 = 0
-
-
-        self.p2richtung = "links"
-
-        self.p2_indikator = 3
-        
+        # General
         self.gravity = 0.75
 
-        self.p2IsPunching = False
-        self.p2LastPunchTime = time.time()  # Zeit vom letzten Schlag
-
-        self.p2_last_jump_time = time.time()
+        self.speed = 3
+        self.speed_block = self.speed // 2
 
         self.backgroundColor = 0
-        
-
-        self.new_hp_bar = 35
-
-        self.state_player_2 = str
-
-
        
         pyxel.load("res.pyxres")
         pyxel.playm(0, loop= True)
@@ -64,16 +43,17 @@ class App:
 
     def update(self):
         # Gravitation
-
         self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
 
         self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
 
 
         # Movement
-        self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung)
+        self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung, self.state_player_1, 
+                                                            self.speed, self.speed_block)
 
-        self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung)
+        self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung, self.state_player_2, 
+                                                            self.speed, self.speed_block)
 
         # Jump
         if 62 > self.rect_y1 > 55:
@@ -125,7 +105,7 @@ class App:
         pyxel.rect(self.rect_x1, self.rect_y1, 32, 32, 2)
 
         if self.p1richtung == "rechts":
-            pyxel.rect(self.rect_x1 +30, self.rect_y1 + 4, 2,2 ,0)
+            pyxel.rect(self.rect_x1 + 30, self.rect_y1 + 4, 2,2 ,0)
 
         if self.p1richtung == "links":
             pyxel.rect(self.rect_x1, self.rect_y1 + 4, 2,2 ,0)
@@ -136,7 +116,7 @@ class App:
         pyxel.rect(self.rect_x2, self.rect_y2, 32, 32, 1)
 
         if self.p2richtung == "rechts":
-            pyxel.rect(self.rect_x2 +30, self.rect_y2 + 4, 2,2 ,0)
+            pyxel.rect(self.rect_x2 + 30, self.rect_y2 + 4, 2,2 ,0)
 
         if self.p2richtung == "links":
             pyxel.rect(self.rect_x2 , self.rect_y2 + 4, 2,2 ,0)
