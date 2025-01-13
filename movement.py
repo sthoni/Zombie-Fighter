@@ -22,7 +22,6 @@ def movementP1(xPos, richtung, state, speed, speed_block):
     return xPos, richtung
 
 def movementP2(xPos, richtung, state, speed, speed_block):
-    print(state)
     if pyxel.btn(pyxel.KEY_RIGHT):
         if xPos <= 180 - 32:
             if state == "blocking":

@@ -34,18 +34,43 @@ class App:
         self.backgroundColor = 0
        
         pyxel.load("res.pyxres")
-        pyxel.playm(0, loop= True)
+        self.musik_started = False
 
         self.game_over_music = False
+
+        self.state = "Menu"
+        self.button = 1
+        self.time_last_button_switch = time.time()
 
         pyxel.run(self.update, self.draw)
 
 
     def update(self):
+
+        if self.state == "Menu":
+            if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.1:
+                self.button -= 1
+                print(self.button)
+                self.time_last_button_switch = time.time()
+            if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch >= 0.1:
+                self.button += 1
+                print(self.button)
+                self.time_last_button_switch = time.time()
+
+                
+
+
+
         # Gravitation
         self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
 
         self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
+
+        # Play Music
+        if self.state == "Game":
+            if self.musik_started == False:
+                pyxel.playm(0, loop= True)
+                self.musik_started = True
 
 
         # Movement
@@ -98,6 +123,9 @@ class App:
     def draw(self):
         pyxel.cls(0)
         
+        
+
+
         pyxel.blt(0,0,2, 0, 0, 180, 100)
 
         #Spieler 1
@@ -124,14 +152,14 @@ class App:
 
         # HP bar for Player 1
         pyxel.rect(12, 7, 1000 / 22, 5, 8)
-        pyxel.rect(12, 7, self.hp1 / 22, 5, 3)
+        pyxel.rect(12, 7, self.hp1 / 22, 5, 5)
 
         # Cooldown indikator p1
         pyxel.rect(12, 20, 5,5, self.p1_indikator)
 
         # HP bar for Player 2
         pyxel.rect(120, 7, 1000 / 22, 5, 8)
-        pyxel.rect(120, 7, self.hp2 / 22, 5, 3)
+        pyxel.rect(120, 7, self.hp2 / 22, 5, 5)
 
         # Cooldown indikator p2
         pyxel.rect(120, 20, 5,5, self.p2_indikator)
@@ -155,8 +183,6 @@ class App:
             pyxel.rect(self.rect_x2 + 40, self.rect_y2 + 5, 20, 20, 8)
             pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
 
-        pyxel.rect(70,10, 16,16,10)
-        pyxel.blt(70, 10, 0, 0, 0, 16, 16, 14)  
 
         if self.hp1 <= 0 or self.hp2 <= 0:
             pyxel.rect(0,0, 180, 100, 0)
@@ -178,6 +204,22 @@ class App:
                 pyxel.play(3,49)
                 pyxel.playm(1, loop= False)
         
+
+        if self.state == "Menu":
+            pyxel.rect(0,0,180,100,0)
+
+            pyxel.text(65,30,"Street Fighter", 7)
+
+
+            pyxel.text(85,50,"PLAY", 7)
+            if self.button % 2 == 0:
+                pyxel.rectb(82,48,20,10, 7)
+
+            pyxel.text(78,64,"Tutorial", 7)
+            if self.button % 2 != 0:
+                pyxel.rectb(75,62,38,10, 7)
+            
         
+            
 
 App()
