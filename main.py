@@ -47,21 +47,25 @@ class App:
 
     def update(self):
 
+        if self.state == "Tutorial":
+            if pyxel.btn(pyxel.KEY_LEFT):
+                self.state = "Menu"
+                print("Tutorial")
+
         if self.state == "Menu":
             if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.1:
                 self.button -= 1
-                print(self.button)
                 self.time_last_button_switch = time.time()
             if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch >= 0.1:
                 self.button += 1
-                print(self.button)
                 self.time_last_button_switch = time.time()
 
-        if self.button % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
-            self.state = "Game"
+            if self.button % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
+                self.state = "Game"
+            if self.button % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN):
+                self.state = "Tutorial"
 
                 
-        print(self.state)
 
         if self.state == "Game":
             # Gravitation
@@ -221,6 +225,22 @@ class App:
             pyxel.text(78,64,"Tutorial", 7)
             if self.button % 2 != 0:
                 pyxel.rectb(75,62,38,10, 7)
+
+        if self.state == "Tutorial":
+            pyxel.rect(0,0,180,100,0)
+            pyxel.text(35,90,"Press Left Arrow to escape", 7)
+
+            pyxel.text(77,10,"Tutorial", 7)
+
+
+
+            pyxel.text(5,25,"Movement Player 1: W A S D", 1)
+            pyxel.text(5, 35, "Punch Player 1: SPACE", 1)
+            pyxel.text(5, 45, "Block Player 1: STRG", 1)
+            
+            pyxel.text(5,60,"Movement Player 1: W A S D", 2)
+            pyxel.text(5, 70, "Punch Player 1: SPACE", 2)
+            pyxel.text(5, 80, "Block Player 1: STRG", 2)
             
         
             
