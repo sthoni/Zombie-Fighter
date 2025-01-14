@@ -38,7 +38,7 @@ class App:
 
         self.game_over_music = False
 
-        self.state = "Menu"
+        self.state = "Menu" # need to change to Menu"
         self.button = 1
         self.time_last_button_switch = time.time()
 
@@ -57,68 +57,71 @@ class App:
                 print(self.button)
                 self.time_last_button_switch = time.time()
 
+        if self.button % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
+            self.state = "Game"
+
                 
+        print(self.state)
 
-
-
-        # Gravitation
-        self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
-
-        self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
-
-        # Play Music
         if self.state == "Game":
-            if self.musik_started == False:
-                pyxel.playm(0, loop= True)
-                self.musik_started = True
+            # Gravitation
+            self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
+
+            self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
+
+            # Play Music
+            if self.state == "Game":
+                if self.musik_started == False:
+                    pyxel.playm(0, loop= True)
+                    self.musik_started = True
 
 
-        # Movement
-        self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung, self.state_player_1, 
-                                                            self.speed, self.speed_block)
+            # Movement
+            self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung, self.state_player_1, 
+                                                                self.speed, self.speed_block)
 
-        self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung, self.state_player_2, 
-                                                            self.speed, self.speed_block)
+            self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung, self.state_player_2, 
+                                                                self.speed, self.speed_block)
 
-        # Jump
-        if 62 > self.rect_y1 > 55:
-            self.rect_y1 = 59.5
-        if 62 > self.rect_y2 > 55:
-            self.rect_y2 = 59.5
+            # Jump
+            if 62 > self.rect_y1 > 55:
+                self.rect_y1 = 59.5
+            if 62 > self.rect_y2 > 55:
+                self.rect_y2 = 59.5
 
-        if pyxel.btn(pyxel.KEY_W):
-            self.rect_y1, self.p1_last_jump_time = movement.jump(self.rect_y1, self.p1_last_jump_time)
+            if pyxel.btn(pyxel.KEY_W):
+                self.rect_y1, self.p1_last_jump_time = movement.jump(self.rect_y1, self.p1_last_jump_time)
 
-        if pyxel.btn(pyxel.KEY_UP):
-            self.rect_y2, self.p2_last_jump_time = movement.jump(self.rect_y2, self.p2_last_jump_time)
+            if pyxel.btn(pyxel.KEY_UP):
+                self.rect_y2, self.p2_last_jump_time = movement.jump(self.rect_y2, self.p2_last_jump_time)
 
-        # Block
-        if pyxel.btn(pyxel.KEY_CTRL):
-            self.state_player_1 = "blocking"
-        else:
-            self.state_player_1 = "normal"
+            # Block
+            if pyxel.btn(pyxel.KEY_CTRL):
+                self.state_player_1 = "blocking"
+            else:
+                self.state_player_1 = "normal"
 
-        if pyxel.btn(pyxel.KEY_KP_5):
-            self.state_player_2 = "blocking"
-        else:
-            self.state_player_2 = "normal"
-        
-        # Schlag
-        self.p1IsPunching, self.p1LastPunchTime, self.hp2, self =  movement.punch_p1(self, self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
+            if pyxel.btn(pyxel.KEY_KP_5):
+                self.state_player_2 = "blocking"
+            else:
+                self.state_player_2 = "normal"
+            
+            # Schlag
+            self.p1IsPunching, self.p1LastPunchTime, self.hp2, self =  movement.punch_p1(self, self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
 
-        self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self, self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
-        
+            self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self, self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
+            
 
-        if time.time() - self.p1LastPunchTime >= 0.5:
-            self.p1_indikator = 3
-        else:
-            self.p1_indikator = 8
+            if time.time() - self.p1LastPunchTime >= 0.5:
+                self.p1_indikator = 3
+            else:
+                self.p1_indikator = 8
 
 
-        if time.time() - self.p2LastPunchTime >= 0.5:
-            self.p2_indikator = 3
-        else:
-            self.p2_indikator = 8
+            if time.time() - self.p2LastPunchTime >= 0.5:
+                self.p2_indikator = 3
+            else:
+                self.p2_indikator = 8
 
     def draw(self):
         pyxel.cls(0)

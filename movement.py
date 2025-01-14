@@ -70,7 +70,7 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
             if self.state_player_2 == "normal" and self.state_player_1 == "normal":
                 hp2 -= 80
                 pyxel.play(3,51)
-                self.rect_x2 += 15
+                self.rect_x2 += 10
             elif self.state_player_2 == "blocking" and self.state_player_1 == "normal":
                 hp2 -= 10
                 pyxel.play(3,51)
@@ -81,7 +81,7 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
             if self.state_player_2 == "normal" and self.state_player_1 == "normal":
                 hp2 -= 80
                 pyxel.play(3,51)
-                self.rect_x2 -= 15
+                self.rect_x2 -= 10
             elif self.state_player_2 == "blocking" and self.state_player_1 == "normal":
                 hp2 -= 10
                 pyxel.play(3,51)
@@ -107,6 +107,7 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
             if self.state_player_1 == "normal" and self.state_player_2 == "normal":
                 hp1 -= 80
                 pyxel.play(2,50)
+                self.rect_x1 += 10
             elif self.state_player_1 == "blocking" and self.state_player_2 == "normal":
                 hp1 -= 10
                 pyxel.play(2,50)
@@ -117,6 +118,7 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
             if self.state_player_1 == "normal" and self.state_player_2 == "normal":
                 hp1 -= 80
                 pyxel.play(2,50)
+                self.rect_x1 -= 10
             elif self.state_player_1 == "blocking" and self.state_player_2 == "normal":
                 hp1 -= 10
                 pyxel.play(2,50)
