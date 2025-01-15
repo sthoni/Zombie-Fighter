@@ -38,46 +38,61 @@ class App:
 
         self.game_over_music = False
 
-        self.state = "Menu" # need to change to Menu"
-        self.button = 1
+        self.state = "Menu" # need to change to Menu
+
+        #Main Menu
+        self.button_main_menu = 1
         self.time_last_button_switch = time.time()
+
+        #Game Over Menu
+        self.button_game_over = 1
+        self.time_last_button_switch_game_over = time.time()
+        self.press_cooldown_game_over = 5
 
         pyxel.run(self.update, self.draw)
 
 
     def update(self):
-
-        if self.state == "Tutorial":
-            if pyxel.btn(pyxel.KEY_LEFT):
-                self.state = "Menu"
-                print("Tutorial")
+        print(time.time() - self.press_cooldown_game_over)
 
         if self.state == "Menu":
             if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.1:
-                self.button -= 1
+                self.button_main_menu -= 1
                 self.time_last_button_switch = time.time()
+                pyxel.play(1, 55)
             if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch >= 0.1:
-                self.button += 1
+                self.button_main_menu += 1
                 self.time_last_button_switch = time.time()
+                pyxel.play(1, 55)
 
-            if self.button % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
+            if self.button_main_menu % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1:
                 self.state = "Game"
-            if self.button % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN):
-                self.state = "Tutorial"
+                pyxel.play(2, 53)
+            if self.button_main_menu % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1:
+                self.state = "Controls"
+                pyxel.play(2, 53)
 
-                
+        if self.state == "Controls":
+            if pyxel.btn(pyxel.KEY_LEFT):
+                self.state = "Menu"
+                print("Controls")
+                pyxel.play(2, 53)
+      
 
         if self.state == "Game":
+
+            if self.hp1 <= 0 or self.hp2 <= 0:
+                self.state = "Game Over" 
+
             # Gravitation
             self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
 
             self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
 
             # Play Music
-            if self.state == "Game":
-                if self.musik_started == False:
-                    pyxel.playm(0, loop= True)
-                    self.musik_started = True
+            if self.musik_started == False:
+                pyxel.playm(0, loop= True)
+                self.musik_started = True
 
 
             # Movement
@@ -126,6 +141,41 @@ class App:
                 self.p2_indikator = 3
             else:
                 self.p2_indikator = 8
+        
+        if self.state == "Game Over":
+            if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch_game_over >= 0.1:
+                self.button_game_over -= 1
+                self.time_last_button_switch_game_over = time.time()
+                pyxel.play(1, 55)
+            if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch_game_over >= 0.1:
+                self.button_game_over += 1
+                self.time_last_button_switch_game_over = time.time()
+                pyxel.play(1, 55)
+
+            
+
+            if self.button_game_over % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
+                
+                self.state = "Game"
+                pyxel.play(2, 53)
+
+                self.hp1, self.hp2 = 1000, 1000
+                self.musik_started = False
+
+            if self.button_game_over % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN):
+
+                self.state = "Menu"
+                self.press_cooldown_game_over = time.time()
+                pyxel.play(2, 53)
+
+
+                self.hp1, self.hp2 = 1000, 1000
+                self.musik_started = False
+
+
+
+        print(self.state)
+
 
     def draw(self):
         pyxel.cls(0)
@@ -191,9 +241,11 @@ class App:
             pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
 
 
-        if self.hp1 <= 0 or self.hp2 <= 0:
+        if self.state == "Game Over":
+
             pyxel.rect(0,0, 180, 100, 0)
-            pyxel.text(70,30,"Game Over", 8)
+
+            pyxel.text(70,5,"Game Over", 8)
 
 
             if self.hp1 <= 0:
@@ -201,10 +253,20 @@ class App:
             else:
                 winner = "Player 1 wins"
 
-            pyxel.text(65,50,winner, 8)
-            
-            
+            pyxel.text(63,15,winner, 8)
 
+
+            pyxel.text(70, 50, "Play Again", 7)
+            if self.button_game_over % 2 == 0:
+                pyxel.rectb(67, 48, 45,10,7)
+
+
+            pyxel.text(72, 70, "Main Menu", 7)
+            if self.button_game_over % 2 == 1:
+                pyxel.rectb(68, 68, 42,10,7)
+            
+            
+            #Game over Musik nicht doppelt abspielen
             if not self.game_over_music:
                 self.game_over_music = True
                 pyxel.stop()
@@ -219,28 +281,28 @@ class App:
 
 
             pyxel.text(85,50,"PLAY", 7)
-            if self.button % 2 == 0:
+            if self.button_main_menu % 2 == 0:
                 pyxel.rectb(82,48,20,10, 7)
 
-            pyxel.text(78,64,"Tutorial", 7)
-            if self.button % 2 != 0:
+            pyxel.text(78,64,"Controls", 7)
+            if self.button_main_menu % 2 != 0:
                 pyxel.rectb(75,62,38,10, 7)
 
-        if self.state == "Tutorial":
+        if self.state == "Controls":
             pyxel.rect(0,0,180,100,0)
             pyxel.text(35,90,"Press Left Arrow to escape", 7)
 
-            pyxel.text(77,10,"Tutorial", 7)
+            pyxel.text(77,5,"Controls", 7)
 
 
 
-            pyxel.text(5,25,"Movement Player 1: W A S D", 1)
-            pyxel.text(5, 35, "Punch Player 1: SPACE", 1)
-            pyxel.text(5, 45, "Block Player 1: STRG", 1)
+            pyxel.text(5,20,"Movement Player 1: W A S D", 1)
+            pyxel.text(5, 30, "Punch Player 1: SPACE", 1)
+            pyxel.text(5, 40, "Block Player 1: STRG", 1)
             
-            pyxel.text(5,60,"Movement Player 1: W A S D", 2)
-            pyxel.text(5, 70, "Punch Player 1: SPACE", 2)
-            pyxel.text(5, 80, "Block Player 1: STRG", 2)
+            pyxel.text(5,55,"Movement Player 2: Arrow Keys", 2)
+            pyxel.text(5, 65, "Punch Player 2: 0 (Numpad)", 2)
+            pyxel.text(5, 75, "Block Player 2: 5 (Numpad)", 2)
             
         
             
