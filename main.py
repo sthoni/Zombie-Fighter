@@ -55,7 +55,6 @@ class App:
         print(time.time() - self.press_cooldown_game_over)
 
         if self.state == "Menu":
-            pyxel.play(2, 53)
             if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.1:
                 self.button_main_menu -= 1
                 self.time_last_button_switch = time.time()
