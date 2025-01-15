@@ -38,7 +38,7 @@ class App:
 
         self.game_over_music = False
 
-        self.state = "Menu" # need to change to Menu
+        self.state = "Menu"
 
         #Main Menu
         self.button_main_menu = 1
@@ -51,11 +51,11 @@ class App:
 
         pyxel.run(self.update, self.draw)
 
-
     def update(self):
         print(time.time() - self.press_cooldown_game_over)
 
         if self.state == "Menu":
+            pyxel.play(2, 53)
             if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.1:
                 self.button_main_menu -= 1
                 self.time_last_button_switch = time.time()
@@ -91,7 +91,7 @@ class App:
 
             # Play Music
             if self.musik_started == False:
-                pyxel.playm(0, loop= True)
+                pyxel.playm(0, loop = True)
                 self.musik_started = True
 
 
@@ -147,12 +147,11 @@ class App:
                 self.button_game_over -= 1
                 self.time_last_button_switch_game_over = time.time()
                 pyxel.play(1, 55)
+
             if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch_game_over >= 0.1:
                 self.button_game_over += 1
                 self.time_last_button_switch_game_over = time.time()
                 pyxel.play(1, 55)
-
-            
 
             if self.button_game_over % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
                 
@@ -173,15 +172,25 @@ class App:
                 self.musik_started = False
 
 
-
         print(self.state)
 
 
     def draw(self):
-        pyxel.cls(0)
-        
-        
+        if self.state == "Game":
+            self.draw_main_game()
 
+        if self.state == "Game Over":
+            self.draw_game_over()
+
+        if self.state == "Menu":
+            self.draw_menu()
+
+        if self.state == "Controls":
+            self.draw_controls()
+
+
+    def draw_main_game(self):
+        pyxel.cls(0)
 
         pyxel.blt(0,0,2, 0, 0, 180, 100)
 
@@ -206,10 +215,10 @@ class App:
         if self.p2richtung == "links":
             pyxel.rect(self.rect_x2 , self.rect_y2 + 4, 2,2 ,0)
 
-
         # HP bar for Player 1
         pyxel.rect(12, 7, 1000 / 22, 5, 8)
         pyxel.rect(12, 7, self.hp1 / 22, 5, 5)
+        pyxel.rectb(12, 6, 1000 / 22, 6, 0)
 
         # Cooldown indikator p1
         pyxel.rect(12, 20, 5,5, self.p1_indikator)
@@ -217,6 +226,7 @@ class App:
         # HP bar for Player 2
         pyxel.rect(120, 7, 1000 / 22, 5, 8)
         pyxel.rect(120, 7, self.hp2 / 22, 5, 5)
+        pyxel.rectb(120, 6, 1000 / 22, 6, 0)
 
         # Cooldown indikator p2
         pyxel.rect(120, 20, 5,5, self.p2_indikator)
@@ -229,9 +239,6 @@ class App:
             pyxel.rect(self.rect_x2 + 9, self.rect_y2 + 9, 13, 13, 13)
 
 
-
-
-
         if self.p1IsPunching:
             pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8)
             pyxel.rect(self.rect_x1 - 28, self.rect_y1 + 5, 20, 20, 8)
@@ -241,70 +248,62 @@ class App:
             pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
 
 
-        if self.state == "Game Over":
+    def draw_game_over(self):
+        pyxel.rect(0,0, 180, 100, 0)
 
-            pyxel.rect(0,0, 180, 100, 0)
+        pyxel.text(70,5,"Game Over", 8)
 
-            pyxel.text(70,5,"Game Over", 8)
+        pyxel.text(63, 15 , "Player 2 wins" if self.hp1 <= 0 else "Player 1 wins", 8)
 
-
-            if self.hp1 <= 0:
-                winner = "Player 2 wins"
-            else:
-                winner = "Player 1 wins"
-
-            pyxel.text(63,15,winner, 8)
+        pyxel.text(70, 50, "Play Again", 7)
+        if self.button_game_over % 2 == 0:
+            pyxel.rectb(67, 48, 45,10,7)
 
 
-            pyxel.text(70, 50, "Play Again", 7)
-            if self.button_game_over % 2 == 0:
-                pyxel.rectb(67, 48, 45,10,7)
-
-
-            pyxel.text(72, 70, "Main Menu", 7)
-            if self.button_game_over % 2 == 1:
-                pyxel.rectb(68, 68, 42,10,7)
-            
-            
-            #Game over Musik nicht doppelt abspielen
-            if not self.game_over_music:
-                self.game_over_music = True
-                pyxel.stop()
-                pyxel.play(3,49)
-                pyxel.playm(1, loop= False)
+        pyxel.text(72, 70, "Main Menu", 7)
+        if self.button_game_over % 2 == 1:
+            pyxel.rectb(68, 68, 42,10,7)
+        
+        
+        #Game over Musik nicht doppelt abspielen
+        # (N) Logik gehört nicht in der draw Methode
+        if not self.game_over_music:
+            self.game_over_music = True
+            pyxel.stop()
+            pyxel.play(3,49)
+            pyxel.playm(1, loop = False)
         
 
-        if self.state == "Menu":
-            pyxel.rect(0,0,180,100,0)
+    def draw_menu(self):
+        pyxel.rect(0,0,180,100,0)
 
-            pyxel.text(65,30,"Street Fighter", 7)
+        pyxel.text(65,30,"Street Fighter", 7)
 
+        pyxel.text(85,50,"PLAY", 7)
+        if self.button_main_menu % 2 == 0:
+            pyxel.rectb(82,48,20,10, 7)
 
-            pyxel.text(85,50,"PLAY", 7)
-            if self.button_main_menu % 2 == 0:
-                pyxel.rectb(82,48,20,10, 7)
-
-            pyxel.text(78,64,"Controls", 7)
-            if self.button_main_menu % 2 != 0:
-                pyxel.rectb(75,62,38,10, 7)
-
-        if self.state == "Controls":
-            pyxel.rect(0,0,180,100,0)
-            pyxel.text(35,90,"Press Left Arrow to escape", 7)
-
-            pyxel.text(77,5,"Controls", 7)
+        pyxel.text(78,64,"Controls", 7)
+        if self.button_main_menu % 2 != 0:
+            pyxel.rectb(75,62,38,10, 7)
 
 
+    def draw_controls(self):
+        pyxel.rect(0,0,180,100,0)
+        pyxel.text(35,90,"Press Left Arrow to escape", 7)
 
-            pyxel.text(5,20,"Movement Player 1: W A S D", 1)
-            pyxel.text(5, 30, "Punch Player 1: SPACE", 1)
-            pyxel.text(5, 40, "Block Player 1: STRG", 1)
-            
-            pyxel.text(5,55,"Movement Player 2: Arrow Keys", 2)
-            pyxel.text(5, 65, "Punch Player 2: 0 (Numpad)", 2)
-            pyxel.text(5, 75, "Block Player 2: 5 (Numpad)", 2)
-            
+        pyxel.text(77,5,"Controls", 7)
+
+
+
+        pyxel.text(5,20,"Movement Player 1: W A S D", 1)
+        pyxel.text(5, 30, "Punch Player 1: SPACE", 1)
+        pyxel.text(5, 40, "Block Player 1: STRG", 1)
         
-            
+        pyxel.text(5,55,"Movement Player 2: Arrow Keys", 2)
+        pyxel.text(5, 65, "Punch Player 2: 0 (Numpad)", 2)
+        pyxel.text(5, 75, "Block Player 2: 5 (Numpad)", 2)
+
+
 
 App()
