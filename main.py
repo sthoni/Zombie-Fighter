@@ -10,7 +10,7 @@ class App:
         self.rect_x1, self.rect_x2 = 60, 150
         self.rect_y1, self.rect_y2 = 10, 10
 
-        self.hp1, self.hp2 = 1000, 1000
+        self.hp1, self.hp2 = 1000, 1000  # 1000, 1000
 
         self.velocity_p1, self.velocity_p2 = 0, 0
 
@@ -51,140 +51,155 @@ class App:
 
         pyxel.run(self.update, self.draw)
 
+
     def update(self):
-        print(time.time() - self.press_cooldown_game_over)
-
         if self.state == "Menu":
-            if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.1:
-                self.button_main_menu -= 1
-                self.time_last_button_switch = time.time()
-                pyxel.play(1, 55)
-            if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch >= 0.1:
-                self.button_main_menu += 1
-                self.time_last_button_switch = time.time()
-                pyxel.play(1, 55)
-
-            if self.button_main_menu % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1:
-                self.state = "Game"
-                pyxel.play(2, 53)
-            if self.button_main_menu % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1:
-                self.state = "Controls"
-                pyxel.play(2, 53)
-
-        if self.state == "Controls":
-            if pyxel.btn(pyxel.KEY_LEFT):
-                self.state = "Menu"
-                print("Controls")
-                pyxel.play(2, 53)
-      
-
-        if self.state == "Game":
-
-            if self.hp1 <= 0 or self.hp2 <= 0:
-                self.state = "Game Over" 
-
-            # Gravitation
-            self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
-
-            self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
-
-            # Play Music
-            if self.musik_started == False:
-                pyxel.playm(0, loop = True)
-                self.musik_started = True
-
-
-            # Movement
-            self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung, self.state_player_1, 
-                                                                self.speed, self.speed_block)
-
-            self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung, self.state_player_2, 
-                                                                self.speed, self.speed_block)
-
-            # Jump
-            if 62 > self.rect_y1 > 55:
-                self.rect_y1 = 59.5
-            if 62 > self.rect_y2 > 55:
-                self.rect_y2 = 59.5
-
-            if pyxel.btn(pyxel.KEY_W):
-                self.rect_y1, self.p1_last_jump_time = movement.jump(self.rect_y1, self.p1_last_jump_time)
-
-            if pyxel.btn(pyxel.KEY_UP):
-                self.rect_y2, self.p2_last_jump_time = movement.jump(self.rect_y2, self.p2_last_jump_time)
-
-            # Block
-            if pyxel.btn(pyxel.KEY_CTRL):
-                self.state_player_1 = "blocking"
-            else:
-                self.state_player_1 = "normal"
-
-            if pyxel.btn(pyxel.KEY_KP_5):
-                self.state_player_2 = "blocking"
-            else:
-                self.state_player_2 = "normal"
-            
-            # Schlag
-            self.p1IsPunching, self.p1LastPunchTime, self.hp2, self =  movement.punch_p1(self, self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
-
-            self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self, self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
-            
-
-            if time.time() - self.p1LastPunchTime >= 0.5:
-                self.p1_indikator = 3
-            else:
-                self.p1_indikator = 8
-
-
-            if time.time() - self.p2LastPunchTime >= 0.5:
-                self.p2_indikator = 3
-            else:
-                self.p2_indikator = 8
-        
-        if self.state == "Game Over":
-            if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch_game_over >= 0.1:
-                self.button_game_over -= 1
-                self.time_last_button_switch_game_over = time.time()
-                pyxel.play(1, 55)
-
-            if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch_game_over >= 0.1:
-                self.button_game_over += 1
-                self.time_last_button_switch_game_over = time.time()
-                pyxel.play(1, 55)
-
-            if self.button_game_over % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
-                
-                self.state = "Game"
-                pyxel.play(2, 53)
-
-                self.hp1, self.hp2 = 1000, 1000
-                self.musik_started = False
-
-            if self.button_game_over % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN):
-
-                self.state = "Menu"
-                self.press_cooldown_game_over = time.time()
-                pyxel.play(2, 53)
-
-
-                self.hp1, self.hp2 = 1000, 1000
-                self.musik_started = False
-
+            self.update_menu()
+        elif self.state == "Controls":
+            self.update_controls()
+        elif self.state == "Game":
+            self.update_game()
+        elif self.state == "Game Over":
+            self.update_game_over()
 
         print(self.state)
+
+
+    def update_menu(self):
+
+        if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.1:
+            self.button_main_menu -= 1
+            self.time_last_button_switch = time.time()
+            pyxel.play(1, 55)
+        if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch >= 0.1:
+            self.button_main_menu += 1
+            self.time_last_button_switch = time.time()
+            pyxel.play(1, 55)
+
+        if self.button_main_menu % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1:
+            self.state = "Game"
+            pyxel.play(2, 53)
+        if self.button_main_menu % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1:
+            self.state = "Controls"
+            pyxel.play(2, 53)
+
+    def update_controls(self):
+
+        if pyxel.btn(pyxel.KEY_LEFT):
+            self.state = "Menu"
+            print("Controls")
+            pyxel.play(2, 53)
+      
+
+    def update_game(self):
+
+        if self.hp1 <= 0 or self.hp2 <= 0:
+            self.state = "Game Over" 
+
+        # Gravitation
+        self.rect_y1, self.velocity_p1 = movement.gravitation(self.rect_y1, self.gravity, self.velocity_p1)
+
+        self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
+
+        # Play Music
+        if self.musik_started == False:
+            pyxel.playm(0, loop = True)
+            self.musik_started = True
+
+
+        # Movement
+        self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung, self.state_player_1, 
+                                                            self.speed, self.speed_block)
+
+        self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung, self.state_player_2, 
+                                                            self.speed, self.speed_block)
+
+        # Jump
+        if 62 > self.rect_y1 > 55:
+            self.rect_y1 = 59.5
+        if 62 > self.rect_y2 > 55:
+            self.rect_y2 = 59.5
+
+        if pyxel.btn(pyxel.KEY_W):
+            self.rect_y1, self.p1_last_jump_time = movement.jump(self.rect_y1, self.p1_last_jump_time)
+
+        if pyxel.btn(pyxel.KEY_UP):
+            self.rect_y2, self.p2_last_jump_time = movement.jump(self.rect_y2, self.p2_last_jump_time)
+
+        # Block
+        if pyxel.btn(pyxel.KEY_CTRL):
+            self.state_player_1 = "blocking"
+        else:
+            self.state_player_1 = "normal"
+
+        if pyxel.btn(pyxel.KEY_KP_5):
+            self.state_player_2 = "blocking"
+        else:
+            self.state_player_2 = "normal"
+        
+        # Schlag
+        self.p1IsPunching, self.p1LastPunchTime, self.hp2, self =  movement.punch_p1(self, self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
+
+        self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self, self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
+        
+
+        if time.time() - self.p1LastPunchTime >= 0.5:
+            self.p1_indikator = 3
+        else:
+            self.p1_indikator = 8
+
+
+        if time.time() - self.p2LastPunchTime >= 0.5:
+            self.p2_indikator = 3
+        else:
+            self.p2_indikator = 8
+        
+
+    def update_game_over(self):
+
+        if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch_game_over >= 0.1:
+            self.button_game_over -= 1
+            self.time_last_button_switch_game_over = time.time()
+            pyxel.play(1, 55)
+
+        if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch_game_over >= 0.1:
+            self.button_game_over += 1
+            self.time_last_button_switch_game_over = time.time()
+            pyxel.play(1, 55)
+
+        if self.button_game_over % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
+            
+            self.state = "Game"
+            pyxel.play(2, 53)
+
+            self.hp1, self.hp2 = 1000, 1000
+            self.musik_started = False
+            self.game_over_music = False
+
+        if self.button_game_over % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN):
+
+            self.state = "Menu"
+            self.press_cooldown_game_over = time.time()
+            pyxel.play(2, 53)
+
+
+            self.hp1, self.hp2 = 1000, 1000
+            self.musik_started = False
+            self.game_over_music = False
+
 
 
     def draw(self):
         if self.state == "Game":
             self.draw_main_game()
 
-        if self.state == "Game Over":
+        elif self.state == "Game Over":
             self.draw_game_over()
 
-        if self.state == "Menu":
+        elif self.state == "Menu":
             self.draw_menu()
 
-        if self.state == "Controls":
+        elif self.state == "Controls":
             self.draw_controls()
 
 
