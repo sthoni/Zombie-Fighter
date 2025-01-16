@@ -7,8 +7,8 @@ class App:
         pyxel.init(180, 100)
         
         # Players
-        self.rect_x1, self.rect_x2 = 60, 150
-        self.rect_y1, self.rect_y2 = 10, 10
+        self.rect_x1, self.rect_x2 = 60, 120
+        self.rect_y1, self.rect_y2 = -100, -100
 
         self.hp1, self.hp2 = 1000, 1000  # 1000, 1000
 
@@ -231,7 +231,7 @@ class App:
 
         # HP bar for Player 1
         pyxel.rect(12, 7, 1000 / 22, 5, 8)
-        pyxel.rect(12, 7, self.hp1 / 22, 5, 5)
+        pyxel.rect(12, 7, self.hp1 / 22, 5, 3)
         pyxel.rectb(12, 6, 1000 / 22, 6, 0)
 
         # Cooldown indikator p1
@@ -239,7 +239,7 @@ class App:
 
         # HP bar for Player 2
         pyxel.rect(120, 7, 1000 / 22, 5, 8)
-        pyxel.rect(120, 7, self.hp2 / 22, 5, 5)
+        pyxel.rect(120, 7, self.hp2 / 22, 5, 3)
         pyxel.rectb(120, 6, 1000 / 22, 6, 0)
 
         # Cooldown indikator p2
