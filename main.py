@@ -176,7 +176,7 @@ class App:
         # Schlag
         self.p1IsPunching, self.p1LastPunchTime, self.hp2, self =  movement.punch_p1(self, self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
 
-        self.p2IsPunching, self.p2LastPunchTime, self.hp1 =  movement.punch_p2(self, self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
+        self.p2IsPunching, self.p2LastPunchTime, self.hp1, self =  movement.punch_p2(self, self.p2IsPunching, self.p2LastPunchTime, self.rect_x1, self.rect_x2, self.hp1)
         
 
         if time.time() - self.p1LastPunchTime >= 0.5:
