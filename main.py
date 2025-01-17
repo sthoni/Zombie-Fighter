@@ -111,9 +111,9 @@ class App:
         self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
 
         # Play Music
-        if self.musik_started == False:
-            pyxel.playm(2, loop = True)
-            self.musik_started = True
+        #if self.musik_started == False:
+        #    pyxel.playm(2, loop = True)
+        #    self.musik_started = True
 
 
         # Movement
@@ -259,13 +259,15 @@ class App:
 
         #Spieler 2
 
-        pyxel.rect(self.rect_x2, self.rect_y2, 32, 32, 1)
+        #pyxel.rect(self.rect_x2, self.rect_y2, 32, 32, 1)
 
-        if self.p2richtung == "rechts":
-            pyxel.rect(self.rect_x2 + 30, self.rect_y2 + 4, 2,2 ,0)
+        #if self.p2richtung == "rechts":
+        #    pyxel.rect(self.rect_x2 + 30, self.rect_y2 + 4, 2,2 ,0)
 
-        if self.p2richtung == "links":
-            pyxel.rect(self.rect_x2 , self.rect_y2 + 4, 2,2 ,0)
+        #if self.p2richtung == "links":
+        #    pyxel.rect(self.rect_x2 , self.rect_y2 + 4, 2,2 ,0)
+
+        pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 0, 32, 32, 0)
 
         # HP bar for Player 1
         pyxel.rect(12, 7, 1000 / 22, 5, 8)
