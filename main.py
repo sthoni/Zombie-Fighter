@@ -246,13 +246,15 @@ class App:
 
         #Spieler 1
 
-        pyxel.rect(self.rect_x1, self.rect_y1, 32, 32, 2)
+        #pyxel.rect(self.rect_x1, self.rect_y1, 32, 32, 2)
 
-        if self.p1richtung == "rechts":
-            pyxel.rect(self.rect_x1 + 30, self.rect_y1 + 4, 2,2 ,0)
+        #if self.p1richtung == "rechts":
+        #    pyxel.rect(self.rect_x1 + 30, self.rect_y1 + 4, 2, 2 ,0)
 
-        if self.p1richtung == "links":
-            pyxel.rect(self.rect_x1, self.rect_y1 + 4, 2,2 ,0)
+        #if self.p1richtung == "links":
+        #    pyxel.rect(self.rect_x1, self.rect_y1 + 4, 2, 2 ,0)
+
+        pyxel.blt(self.rect_x1, self.rect_y1, 0, 0, 0, 32, 32, 0)
 
 
         #Spieler 2
