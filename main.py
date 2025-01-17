@@ -25,6 +25,13 @@ class App:
 
         self.state_player_1, self.state_player_2 = str, str
 
+        self.block_indicator_p1 = 0
+        self.block_sound_played_p1 = False
+
+        self.block_indicator_p2 = 0
+        self.block_sound_played_p2 = False
+        
+
         # General
         self.gravity = 0.75
 
@@ -49,6 +56,9 @@ class App:
         self.time_last_button_switch_game_over = time.time()
         self.press_cooldown_game_over = 5
 
+        self.block_cooldown_p1 = time.time() -4
+        self.block_cooldown_p2 = time.time() -4
+
         pyxel.run(self.update, self.draw)
 
 
@@ -62,7 +72,6 @@ class App:
         elif self.state == "Game Over":
             self.update_game_over()
 
-        print(self.state)
 
 
     def update_menu(self):
@@ -103,7 +112,7 @@ class App:
 
         # Play Music
         if self.musik_started == False:
-            pyxel.playm(0, loop = True)
+            pyxel.playm(2, loop = True)
             self.musik_started = True
 
 
@@ -127,15 +136,42 @@ class App:
             self.rect_y2, self.p2_last_jump_time = movement.jump(self.rect_y2, self.p2_last_jump_time)
 
         # Block
-        if pyxel.btn(pyxel.KEY_CTRL):
+        if pyxel.btnr(pyxel.KEY_CTRL) and time.time() - self.block_cooldown_p1 >= 4:
+            self.block_cooldown_p1 = time.time()
+        if pyxel.btn(pyxel.KEY_CTRL) and time.time() - self.block_cooldown_p1 >= 4:
             self.state_player_1 = "blocking"
         else:
             self.state_player_1 = "normal"
 
-        if pyxel.btn(pyxel.KEY_KP_5):
+        
+        if time.time() - self.block_cooldown_p1 >= 4:
+            self.block_indicator_p1 = 3
+            if self.block_sound_played_p1 == 8:
+                pyxel.play(3,57)
+            self.block_sound_played_p1 = 3
+        else:
+            self.block_indicator_p1 = 8
+            self.block_sound_played_p1 = 8
+
+
+
+        if pyxel.btnr(pyxel.KEY_KP_5) and time.time() - self.block_cooldown_p2 >= 4:
+            self.block_cooldown_p2 = time.time()
+        if pyxel.btn(pyxel.KEY_KP_5) and time.time() - self.block_cooldown_p2 >= 4:
             self.state_player_2 = "blocking"
         else:
             self.state_player_2 = "normal"
+
+        if time.time() - self.block_cooldown_p2 >= 4:
+            self.block_indicator_p2 = 3
+            if self.block_sound_played_p2 == 8:
+                pyxel.play(3,58)
+            self.block_sound_played_p2 =3
+        else:
+            self.block_indicator_p2 = 8
+            self.block_sound_played_p2 = 8
+
+        
         
         # Schlag
         self.p1IsPunching, self.p1LastPunchTime, self.hp2, self =  movement.punch_p1(self, self.p1IsPunching, self.p1LastPunchTime, self.rect_x2, self.rect_x1, self.hp2)
@@ -236,6 +272,7 @@ class App:
 
         # Cooldown indikator p1
         pyxel.rect(12, 20, 5,5, self.p1_indikator)
+        pyxel.rect(20, 20, 5,5, self.block_indicator_p1)
 
         # HP bar for Player 2
         pyxel.rect(120, 7, 1000 / 22, 5, 8)
@@ -244,6 +281,7 @@ class App:
 
         # Cooldown indikator p2
         pyxel.rect(120, 20, 5,5, self.p2_indikator)
+        pyxel.rect(128, 20, 5,5, self.block_indicator_p2)
 
         # Block indikator
         if self.state_player_1 == "blocking":
