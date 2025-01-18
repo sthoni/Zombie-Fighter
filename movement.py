@@ -2,9 +2,10 @@ import pyxel
 import time
 
 # Movement
-def movementP1(xPos, richtung, state, speed, speed_block):
+def movementP1(xPos, richtung, state, speed, speed_block, is_moving):
     
     if pyxel.btn(pyxel.KEY_D):
+            is_moving = True
             if xPos <= 180 - 32:
                 if state == "blocking":
                     xPos += speed_block
@@ -12,14 +13,17 @@ def movementP1(xPos, richtung, state, speed, speed_block):
                     xPos += speed 
                 richtung = "rechts"
     elif pyxel.btn(pyxel.KEY_A):
+        is_moving = True
         if xPos >= 0:
             if state == "blocking":
                 xPos -= speed_block
             else:
                 xPos -= speed 
             richtung = "links"
+    else:
+        is_moving = False
 
-    return xPos, richtung
+    return xPos, richtung, is_moving
 
 def movementP2(xPos, richtung, state, speed, speed_block):
     if pyxel.btn(pyxel.KEY_RIGHT):

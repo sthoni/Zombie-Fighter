@@ -2,6 +2,7 @@ import pyxel
 import movement
 import time
 
+
 class App:
     def __init__(self):
         pyxel.init(180, 100)
@@ -28,6 +29,8 @@ class App:
         self.block_indicator_p1, self.block_indicator_p2 = 0, 0
         
         self.block_sound_played_p1, self.block_sound_played_p2 = False,  False
+
+        self.player1_moving = False
         
 
         # General
@@ -59,6 +62,11 @@ class App:
 
         #Intro
         self.press_cooldown_intro = 5
+
+        # Animation
+        self.animation_timer = 0
+
+        self.movement_frame = int
 
         pyxel.run(self.update, self.draw)
 
@@ -121,19 +129,17 @@ class App:
         self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
 
         # Play Music
-        if self.musik_started == False:
-            pyxel.playm(2, loop = True)
-            self.musik_started = True
-
+        #if self.musik_started == False:
+        #    pyxel.playm(2, loop = True)
+        #    self.musik_started = True
 
         # Movement
-        self.rect_x1, self.p1richtung = movement.movementP1(self.rect_x1, self.p1richtung, self.state_player_1, 
-                                                            self.speed, self.speed_block)
+        self.rect_x1, self.p1richtung, self.player1_moving = movement.movementP1(self.rect_x1, self.p1richtung, self.state_player_1, 
+                                                            self.speed, self.speed_block, self.player1_moving)
 
         self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung, self.state_player_2, 
                                                             self.speed, self.speed_block)
         
-        print(f" P1: {self.p1richtung} P2: {self.p2richtung}")
 
         # Jump
         if 62 > self.rect_y1 > 55:
@@ -288,8 +294,24 @@ class App:
 
         #if self.p1richtung == "links":
         #    pyxel.rect(self.rect_x1, self.rect_y1 + 4, 2, 2 ,0)
+        self.animation_timer += 1
 
-        pyxel.blt(self.rect_x1, self.rect_y1, 0, 0, 0, 32, 32, 0)
+        if self.animation_timer % 4 == 0:
+            if (self.animation_timer / 4) % 2:
+                self.movement_frame = 1
+            else:
+                self.movement_frame = 0
+
+
+
+        if self.player1_moving is True:
+            if self.movement_frame == 0:
+                pyxel.blt(self.rect_x1, self.rect_y1
+                          , 0, 0, 200, 32, 32, 10) #0
+            else:
+                pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 1, 32, 32, 10) #1
+        else:
+            pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 1, 32, 32, 10) # idle frame
 
 
         #Spieler 2
@@ -302,7 +324,7 @@ class App:
         #if self.p2richtung == "links":
         #    pyxel.rect(self.rect_x2 , self.rect_y2 + 4, 2,2 ,0)
 
-        pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 0, 32, 32, 0)
+        pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 1, 32, 32, 10)
 
         # HP bar for Player 1
         pyxel.rect(12, 7, 1000 / 22, 5, 8)
