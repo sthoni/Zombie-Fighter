@@ -67,11 +67,11 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
         p_last_punch_time = time.time() # Letzter Schlag (Zeit) wird auf jetzt gesetzt
 
         if collision_rechts(player_x, enemy_x):
-            if self.state_player_2 == "normal" and self.state_player_1 == "normal":
+            if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1richtung == "rechts":
                 hp2 -= 80
                 pyxel.play(3,51)
                 self.rect_x2 += 6
-            elif self.state_player_2 == "blocking" and self.state_player_1 == "normal":
+            elif self.state_player_2 == "blocking" and self.state_player_1 == "normal" and self.p1richtung == "rechts":
                 hp2 -= 10
                 pyxel.play(3,51)
                 self.rect_x2 += 2
@@ -79,11 +79,11 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
             print("Rechts")
 
         if collision_links(player_x, enemy_x):
-            if self.state_player_2 == "normal" and self.state_player_1 == "normal":
+            if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1richtung == "links":
                 hp2 -= 80
                 pyxel.play(3,51)
                 self.rect_x2 -= 6
-            elif self.state_player_2 == "blocking" and self.state_player_1 == "normal":
+            elif self.state_player_2 == "blocking" and self.state_player_1 == "normal" and self.p1richtung == "links":
                 hp2 -= 10
                 pyxel.play(3,51)
                 self.rect_x2 -= 2
@@ -106,11 +106,11 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
         p_last_punch_time = time.time()
 
         if collision_rechts(player_x, enemy_x):
-            if self.state_player_1 == "normal" and self.state_player_2 == "normal":
+            if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2richtung == "rechts":
                 hp1 -= 80
                 pyxel.play(2,50)
                 self.rect_x1 += 6
-            elif self.state_player_1 == "blocking" and self.state_player_2 == "normal":
+            elif self.state_player_1 == "blocking" and self.state_player_2 == "normal" and self.p2richtung == "rechts":
                 hp1 -= 10
                 pyxel.play(2,50)
                 self.rect_x1 += 2
@@ -118,11 +118,11 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
             print("Rechts")
 
         if collision_links(player_x, enemy_x):
-            if self.state_player_1 == "normal" and self.state_player_2 == "normal":
+            if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2richtung == "links":
                 hp1 -= 80
                 pyxel.play(2,50)
                 self.rect_x1 -= 6
-            elif self.state_player_1 == "blocking" and self.state_player_2 == "normal":
+            elif self.state_player_1 == "blocking" and self.state_player_2 == "normal" and self.p2richtung == "links":
                 hp1 -= 10
                 pyxel.play(2,50)
                 self.rect_x1 -= 2

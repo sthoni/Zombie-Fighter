@@ -7,7 +7,7 @@ class App:
         pyxel.init(180, 100)
         
         # Players
-        self.rect_x1, self.rect_x2 = 60, 120
+        self.rect_x1, self.rect_x2 = 40, 110
         self.rect_y1, self.rect_y2 = -100, -100
 
         self.hp1, self.hp2 = 1000, 1000  # 1000, 1000
@@ -21,15 +21,13 @@ class App:
 
         self.p1_last_jump_time, self.p2_last_jump_time = time.time(), time.time()
 
-        self.p1richtung,self.p2richtung = "links", "rechts"
+        self.p1richtung, self.p2richtung = "links", "rechts"
 
         self.state_player_1, self.state_player_2 = str, str
 
-        self.block_indicator_p1 = 0
-        self.block_sound_played_p1 = False
-
-        self.block_indicator_p2 = 0
-        self.block_sound_played_p2 = False
+        self.block_indicator_p1, self.block_indicator_p2 = 0, 0
+        
+        self.block_sound_played_p1, self.block_sound_played_p2 = False,  False
         
 
         # General
@@ -56,8 +54,8 @@ class App:
         self.time_last_button_switch_game_over = time.time()
         self.press_cooldown_game_over = 5
 
-        self.block_cooldown_p1 = time.time() -4
-        self.block_cooldown_p2 = time.time() -4
+        self.block_cooldown_p1 = time.time() - 4
+        self.block_cooldown_p2 = time.time() - 4
 
         #Intro
         self.press_cooldown_intro = 5
@@ -81,19 +79,19 @@ class App:
 
     def update_menu(self):
 
-        if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.1:
+        if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.12:
             self.button_main_menu -= 1
             self.time_last_button_switch = time.time()
             pyxel.play(1, 55)
-        if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch >= 0.1:
+        if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch >= 0.12:
             self.button_main_menu += 1
             self.time_last_button_switch = time.time()
             pyxel.play(1, 55)
 
-        if self.button_main_menu % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1 and time.time() - self.press_cooldown_intro >= 1:
+        if self.button_main_menu % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 0.5 and time.time() - self.press_cooldown_intro >= 0.5:
             self.state = "Game"
             pyxel.play(2, 53)
-        if self.button_main_menu % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1 and time.time() - self.press_cooldown_intro >= 1:
+        if self.button_main_menu % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 0.5 and time.time() - self.press_cooldown_intro >= 0.5:
             self.state = "Controls"
             pyxel.play(2, 53)
 
@@ -134,6 +132,8 @@ class App:
 
         self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung, self.state_player_2, 
                                                             self.speed, self.speed_block)
+        
+        print(f" P1: {self.p1richtung} P2: {self.p2richtung}")
 
         # Jump
         if 62 > self.rect_y1 > 55:
@@ -205,15 +205,18 @@ class App:
 
     def update_game_over(self):
 
-        if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch_game_over >= 0.1:
+        if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch_game_over >= 0.12:
             self.button_game_over -= 1
             self.time_last_button_switch_game_over = time.time()
             pyxel.play(1, 55)
 
-        if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch_game_over >= 0.1:
+        if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch_game_over >= 0.12:
             self.button_game_over += 1
             self.time_last_button_switch_game_over = time.time()
             pyxel.play(1, 55)
+
+        self.rect_x1, self.rect_x2 = 40, 110
+        self.rect_y1, self.rect_y2 = -100, -100
 
         if self.button_game_over % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
             
@@ -225,19 +228,17 @@ class App:
             self.musik_started = False
             self.game_over_music = False
 
-        if self.button_game_over % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN):
+        elif self.button_game_over % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN):
 
             self.state = "Menu"
             self.press_cooldown_game_over = time.time()
             pyxel.stop()
             pyxel.play(2, 53)
 
-
             self.hp1, self.hp2 = 1000, 1000
             self.musik_started = False
             self.game_over_music = False
-
-
+            
 
     def draw(self):
         if self.state == "Game":
@@ -259,24 +260,24 @@ class App:
     def draw_intro(self):
         pyxel.cls(0)
 
-        pyxel.rect(0,0, 180, 100, 0)
+        pyxel.rect(0, 0, 180, 100, 0)
 
-        pyxel.text(80,5,"Intro",7)
+        pyxel.text(80, 5,"Intro", 7)
 
-        pyxel.text(16,30, "In einer Welt voller Untoten gibt es", 7)
-        pyxel.text(2,40, "Zombie Kinder, die Samurais sind, warum auch", 7)
-        pyxel.text(8,50, "immer. Sie kaempfen fuer Ehre, VBucks und", 7)
-        pyxel.text(50,60 , "die erste GTA VI CD.", 7)
+        pyxel.text(16, 30, "In einer Welt voller Untoten gibt es", 7)
+        pyxel.text(2, 40, "Zombie Kinder, die Samurais sind, warum auch", 7)
+        pyxel.text(8, 50, "immer. Sie kaempfen fuer Ehre, VBucks und", 7)
+        pyxel.text(50, 60, "die erste GTA VI CD.", 7)
 
-        pyxel.text(79,86, "Weiter", 7)
-        pyxel.rectb(76, 84, 28,10, 7)
+        pyxel.text(79, 86, "Weiter", 7)
+        pyxel.rectb(76, 84, 28, 10, 7)
         
 
 
     def draw_main_game(self):
         pyxel.cls(0)
 
-        pyxel.blt(0,0,2, 0, 0, 180, 100)
+        pyxel.blt(0, 0, 2, 0, 0, 180, 100)
 
         #Spieler 1
 
@@ -308,14 +309,14 @@ class App:
         pyxel.rect(12, 7, self.hp1 / 22, 5, 3)
         pyxel.rectb(12, 6, 1000 / 22, 6, 0)
 
-        # Cooldown indikator p1
-        pyxel.rect(12, 20, 5,5, self.p1_indikator)
-        pyxel.rect(20, 20, 5,5, self.block_indicator_p1)
-
         # HP bar for Player 2
         pyxel.rect(120, 7, 1000 / 22, 5, 8)
         pyxel.rect(120, 7, self.hp2 / 22, 5, 3)
         pyxel.rectb(120, 6, 1000 / 22, 6, 0)
+
+        # Cooldown indikator p1
+        pyxel.rect(12, 20, 5,5, self.p1_indikator)
+        pyxel.rect(20, 20, 5,5, self.block_indicator_p1)
 
         # Cooldown indikator p2
         pyxel.rect(120, 20, 5,5, self.p2_indikator)
@@ -330,12 +331,12 @@ class App:
 
 
         if self.p1IsPunching:
-            pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8)
-            pyxel.rect(self.rect_x1 - 28, self.rect_y1 + 5, 20, 20, 8)
+            pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8) if self.p1richtung == "rechts" \
+                else pyxel.rect(self.rect_x1 - 28, self.rect_y1 + 5, 20, 20, 8) 
 
         if self.p2IsPunching:
-            pyxel.rect(self.rect_x2 + 40, self.rect_y2 + 5, 20, 20, 8)
-            pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
+            pyxel.rect(self.rect_x2 + 40, self.rect_y2 + 5, 20, 20, 8) if self.p2richtung == "rechts" \
+                else pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
 
 
     def draw_game_over(self):
@@ -347,17 +348,16 @@ class App:
 
         pyxel.text(70, 50, "Play Again", 7)
         if self.button_game_over % 2 == 0:
-            pyxel.rectb(67, 48, 45,10,7)
+            pyxel.rectb(67, 48, 45, 10, 7)
 
 
         pyxel.text(72, 70, "Main Menu", 7)
         if self.button_game_over % 2 == 1:
-            pyxel.rectb(68, 68, 42,10,7)
+            pyxel.rectb(68, 68, 42, 10, 7)
         
         
         #Game over Musik nicht doppelt abspielen
-        # (N) Logik gehört nicht in der draw Methode
-        if not self.game_over_music:
+        if self.game_over_music is False:
             self.game_over_music = True
             pyxel.stop()
             pyxel.play(3,49)
@@ -365,32 +365,32 @@ class App:
         
 
     def draw_menu(self):
-        pyxel.rect(0,0,180,100,0)
+        pyxel.rect(0, 0, 180, 100, 0)
 
-        pyxel.text(63,30,"Street Fighter", 7)
+        pyxel.text(63, 30, "Street Fighter", 7)
 
-        pyxel.text(81,50,"PLAY", 7)
+        pyxel.text(81, 50, "PLAY", 7)
         if self.button_main_menu % 2 == 0:
-            pyxel.rectb(78,48,20,10, 7)
+            pyxel.rectb(78, 48, 20, 10, 7)
 
         pyxel.text(73,64,"Controls", 7)
         if self.button_main_menu % 2 != 0:
-            pyxel.rectb(70,62,38,10, 7)
+            pyxel.rectb(70, 62, 38, 10, 7)
 
 
     def draw_controls(self):
-        pyxel.rect(0,0,180,100,0)
-        pyxel.text(35,90,"Press Left Arrow to escape", 7)
+        pyxel.rect(0, 0, 180, 100, 0)
+        pyxel.text(35, 90,"Press Left Arrow to escape", 7)
 
-        pyxel.text(77,5,"Controls", 7)
+        pyxel.text(77, 5,"Controls", 7)
 
 
 
-        pyxel.text(5,20,"Movement Player 1: W A S D", 1)
+        pyxel.text(5, 20,"Movement Player 1: W A S D", 1)
         pyxel.text(5, 30, "Punch Player 1: SPACE", 1)
         pyxel.text(5, 40, "Block Player 1: STRG", 1)
         
-        pyxel.text(5,55,"Movement Player 2: Arrow Keys", 2)
+        pyxel.text(5, 55,"Movement Player 2: Arrow Keys", 2)
         pyxel.text(5, 65, "Punch Player 2: 0 (Numpad)", 2)
         pyxel.text(5, 75, "Block Player 2: 5 (Numpad)", 2)
 
