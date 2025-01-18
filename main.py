@@ -45,7 +45,7 @@ class App:
 
         self.game_over_music = False
 
-        self.state = "Menu"
+        self.state = "Intro"
 
         #Main Menu
         self.button_main_menu = 1
@@ -59,6 +59,9 @@ class App:
         self.block_cooldown_p1 = time.time() -4
         self.block_cooldown_p2 = time.time() -4
 
+        #Intro
+        self.press_cooldown_intro = 5
+
         pyxel.run(self.update, self.draw)
 
 
@@ -71,6 +74,8 @@ class App:
             self.update_game()
         elif self.state == "Game Over":
             self.update_game_over()
+        elif self.state == "Intro":
+            self.update_intro()
 
 
 
@@ -85,10 +90,10 @@ class App:
             self.time_last_button_switch = time.time()
             pyxel.play(1, 55)
 
-        if self.button_main_menu % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1:
+        if self.button_main_menu % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1 and time.time() - self.press_cooldown_intro >= 1:
             self.state = "Game"
             pyxel.play(2, 53)
-        if self.button_main_menu % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1:
+        if self.button_main_menu % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 1 and time.time() - self.press_cooldown_intro >= 1:
             self.state = "Controls"
             pyxel.play(2, 53)
 
@@ -98,6 +103,13 @@ class App:
             self.state = "Menu"
             print("Controls")
             pyxel.play(2, 53)
+
+    def update_intro(self):
+        if pyxel.btn(pyxel.KEY_RETURN):
+            self.press_cooldown_intro = time.time()
+            self.state = "Menu"
+            pyxel.play(2, 53)
+
       
 
     def update_game(self):
@@ -111,9 +123,9 @@ class App:
         self.rect_y2, self.velocity_p2 = movement.gravitation(self.rect_y2, self.gravity, self.velocity_p2)
 
         # Play Music
-        #if self.musik_started == False:
-        #    pyxel.playm(2, loop = True)
-        #    self.musik_started = True
+        if self.musik_started == False:
+            pyxel.playm(2, loop = True)
+            self.musik_started = True
 
 
         # Movement
@@ -206,6 +218,7 @@ class App:
         if self.button_game_over % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN):
             
             self.state = "Game"
+            pyxel.stop()
             pyxel.play(2, 53)
 
             self.hp1, self.hp2 = 1000, 1000
@@ -216,6 +229,7 @@ class App:
 
             self.state = "Menu"
             self.press_cooldown_game_over = time.time()
+            pyxel.stop()
             pyxel.play(2, 53)
 
 
@@ -237,6 +251,26 @@ class App:
 
         elif self.state == "Controls":
             self.draw_controls()
+
+        elif self.state == "Intro":
+            self.draw_intro()
+
+        
+    def draw_intro(self):
+        pyxel.cls(0)
+
+        pyxel.rect(0,0, 180, 100, 0)
+
+        pyxel.text(80,5,"Intro",7)
+
+        pyxel.text(16,30, "In einer Welt voller Untoten gibt es", 7)
+        pyxel.text(2,40, "Zombie Kinder, die Samurais sind, warum auch", 7)
+        pyxel.text(8,50, "immer. Sie kaempfen fuer Ehre, VBucks und", 7)
+        pyxel.text(50,60 , "die erste GTA VI CD.", 7)
+
+        pyxel.text(79,86, "Weiter", 7)
+        pyxel.rectb(76, 84, 28,10, 7)
+        
 
 
     def draw_main_game(self):
@@ -333,15 +367,15 @@ class App:
     def draw_menu(self):
         pyxel.rect(0,0,180,100,0)
 
-        pyxel.text(65,30,"Street Fighter", 7)
+        pyxel.text(63,30,"Street Fighter", 7)
 
-        pyxel.text(85,50,"PLAY", 7)
+        pyxel.text(81,50,"PLAY", 7)
         if self.button_main_menu % 2 == 0:
-            pyxel.rectb(82,48,20,10, 7)
+            pyxel.rectb(78,48,20,10, 7)
 
-        pyxel.text(78,64,"Controls", 7)
+        pyxel.text(73,64,"Controls", 7)
         if self.button_main_menu % 2 != 0:
-            pyxel.rectb(75,62,38,10, 7)
+            pyxel.rectb(70,62,38,10, 7)
 
 
     def draw_controls(self):
@@ -363,3 +397,5 @@ class App:
 
 
 App()
+
+# In einer Welt voller Untoten gibt es Zombie Kinder die Samurais sind, warum auch immer. Sie kämpfen für Ehre, VBucks und die erste GTA VI CD.
