@@ -45,6 +45,7 @@ class App:
         self.musik_started = False
 
         self.game_over_music = False
+        self.menu_music_started = False
 
         self.state = "Intro"
 
@@ -98,27 +99,32 @@ class App:
 
     def update_menu(self):
 
+        if self.menu_music_started == False:
+            pyxel.playm(3, loop=True)
+            self.menu_music_started = True
+
         if pyxel.btn(pyxel.KEY_DOWN) and time.time() - self.time_last_button_switch >= 0.12:
             self.button_main_menu -= 1
             self.time_last_button_switch = time.time()
-            pyxel.play(1, 55)
+            pyxel.play(0, 55)
         if pyxel.btn(pyxel.KEY_UP) and time.time() - self.time_last_button_switch >= 0.12:
             self.button_main_menu += 1
             self.time_last_button_switch = time.time()
-            pyxel.play(1, 55)
+            pyxel.play(0, 55)
 
         if self.button_main_menu % 2 == 0 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 0.5 and time.time() - self.press_cooldown_intro >= 0.5:
             self.state = "Game"
-            pyxel.play(2, 53)
+            pyxel.stop()
+            pyxel.play(0, 53)
         if self.button_main_menu % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN) and time.time() - self.press_cooldown_game_over >= 0.5 and time.time() - self.press_cooldown_intro >= 0.5:
             self.state = "Controls"
-            pyxel.play(2, 53)
+            pyxel.play(0, 53)
 
     def update_controls(self):
 
         if pyxel.btn(pyxel.KEY_LEFT):
             self.state = "Menu"
-            pyxel.play(2, 53)
+            pyxel.play(0, 53)
 
     def update_intro(self):
         if pyxel.btn(pyxel.KEY_RETURN):
@@ -241,6 +247,7 @@ class App:
             self.hp1, self.hp2 = 1000, 1000
             self.musik_started = False
             self.game_over_music = False
+            self.menu_music_started = False
 
         elif self.button_game_over % 2 == 1 and pyxel.btn(pyxel.KEY_RETURN):
 
@@ -252,6 +259,7 @@ class App:
             self.hp1, self.hp2 = 1000, 1000
             self.musik_started = False
             self.game_over_music = False
+            self.menu_music_started = False
             
 
     def draw(self):
@@ -376,28 +384,34 @@ class App:
 
         pyxel.blt(0, 0, 2, 0, 0, 180, 100)
 
-        pyxel.rect(self.rect_x1, self.rect_y1 - 3 ,32,32,3) #Enemy
-
-        pyxel.rect(self.rect_x2 + 16, self.rect_y2,20,32,3) #Blau
-        pyxel.rect(self.rect_x2 - 4, self.rect_y2,20,32,2) # Lila
+        
 
         # HP bar for Player 1
-        pyxel.rect(12, 7, 1000 / 22, 5, 8)
-        pyxel.rect(12, 7, self.hp1 / 22, 5, 3)
-        pyxel.rectb(12, 6, 1000 / 22, 6, 0)
+        pyxel.rect(12, 8, 1000 / 21, 5, 8)
+        pyxel.rect(12, 8, self.hp1 / 21, 5, 3)
+        pyxel.blt(12, 7, 1, 7,7,48,7,0)
+        pyxel.blt(12, 7, 1, 6,32,48,20,0)
+
+        #Pfeil Spieler 1
+        pyxel.blt(self.rect_x1 + 5, self.rect_y1- 10, 1, 8,56,16,16, 0)
 
         # HP bar for Player 2
-        pyxel.rect(120, 7, 1000 / 22, 5, 8)
-        pyxel.rect(120, 7, self.hp2 / 22, 5, 3)
-        pyxel.rectb(120, 6, 1000 / 22, 6, 0)
+        pyxel.rect(120, 8, 1000 / 21, 5, 8)
+        pyxel.rect(120, 8, self.hp2 / 21, 5, 3)
+        pyxel.blt(120, 7, 1, 7,7,48,7,0)
+        pyxel.blt(120, 7, 1, 6,32,48,20,0)
+
+        #Pfeil Spieler 2
+        pyxel.blt(self.rect_x2 + 5, self.rect_y2- 10, 1, 20,56,16,16, 0)
+
 
         # Cooldown indikator p1
-        pyxel.rect(12, 20, 5,5, self.p1_indikator)
-        pyxel.rect(20, 20, 5,5, self.block_indicator_p1)
+        pyxel.rect(12, 24, 5,5, self.p1_indikator)
+        pyxel.rect(20, 24, 5,5, self.block_indicator_p1)
 
         # Cooldown indikator p2
-        pyxel.rect(120, 20, 5,5, self.p2_indikator)
-        pyxel.rect(128, 20, 5,5, self.block_indicator_p2)
+        pyxel.rect(120, 24, 5,5, self.p2_indikator)
+        pyxel.rect(128, 24, 5,5, self.block_indicator_p2)
 
 
         # Block indikator
@@ -433,6 +447,8 @@ class App:
         pyxel.text(72, 70, "Main Menu", 7)
         if self.button_game_over % 2 == 1:
             pyxel.rectb(68, 68, 42, 10, 7)
+
+        pyxel.blt(80, 25, 1, 8, 80, 16, 16, 0)
         
         
         #Game over Musik nicht doppelt abspielen
