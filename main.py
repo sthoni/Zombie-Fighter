@@ -337,6 +337,12 @@ class App:
 
         pyxel.blt(0, 0, 2, 0, 0, 180, 100)
 
+        pyxel.rect(self.rect_x1, self.rect_y1 - 3 ,32,32,3) #Enemy
+
+        pyxel.rect(self.rect_x2 + 16, self.rect_y2,20,32,3) #Blau
+        pyxel.rect(self.rect_x2 - 4, self.rect_y2,20,32,2) # Lila
+
+        
         #Spieler 1
 
         #Spieler 2
@@ -360,6 +366,8 @@ class App:
         pyxel.rect(120, 20, 5,5, self.p2_indikator)
         pyxel.rect(128, 20, 5,5, self.block_indicator_p2)
 
+
+        print(self.p1richtung)
         # Block indikator
         if self.state_player_1 == "blocking":
             pyxel.rect(self.rect_x1 + 9, self.rect_y1 + 9, 13, 13, 13)
@@ -368,13 +376,16 @@ class App:
             pyxel.rect(self.rect_x2 + 9, self.rect_y2 + 9, 13, 13, 13)
 
 
-        if self.p1IsPunching:
-            pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8) if self.p1richtung == "right" \
-                else pyxel.rect(self.rect_x1 - 28, self.rect_y1 + 5, 20, 20, 8) 
+        
 
-        if self.p2IsPunching:
-            pyxel.rect(self.rect_x2 + 40, self.rect_y2 + 5, 20, 20, 8) if self.p2richtung == "right" \
-                else pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
+
+        #if self.p1IsPunching:
+        #    pyxel.rect(self.rect_x1 + 40, self.rect_y1 + 5, 20, 20, 8) if self.p1richtung == "right" \
+         #       else pyxel.rect(self.rect_x1 - 28, self.rect_y1 + 5, 20, 20, 8) 
+
+        #if self.p2IsPunching:
+         #   pyxel.rect(self.rect_x2 + 40, self.rect_y2 + 5, 20, 20, 8) if self.p2richtung == "right" \
+          #      else pyxel.rect(self.rect_x2 - 28, self.rect_y2 + 5, 20, 20, 8)
 
 
     def draw_game_over(self):

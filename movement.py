@@ -120,7 +120,7 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
                 self.rect_x1 += 2
             print("P1: ", hp1)
             print("Rechts")
-
+        
         if collision_links(player_x, enemy_x):
             if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2richtung == "left":
                 hp1 -= 80
@@ -139,9 +139,9 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
     return p_is_punching, p_last_punch_time, hp1, self
 
 def collision_rechts(player_x, enemy_x):
-    if enemy_x >= player_x + 40 and enemy_x <= player_x + 60 or enemy_x < player_x + 40 and enemy_x + 32 > player_x + 60:
+    if enemy_x >= player_x + 16 and enemy_x <= player_x + 26 or enemy_x < player_x + 36 and enemy_x + 40 > player_x + 25:
         return True
     
 def collision_links(player_x, enemy_x):
-    if enemy_x >= player_x - 28 and enemy_x <= player_x -8 or enemy_x < player_x -28 and enemy_x + 32 > player_x -28:
+    if enemy_x >= player_x - 10 and enemy_x <= player_x or enemy_x < player_x -10 and enemy_x + 28 > player_x -10:
         return True
