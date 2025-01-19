@@ -68,8 +68,8 @@ class App:
 
         self.movement_frame = int # move
 
-        #self.play_hit_animation = False # hit
-        #self.count_hit_frames = 0
+        self.player_1_hits = False # hit
+        self.count_hit_images = 0
 
         pyxel.run(self.update, self.draw)
 
@@ -275,19 +275,19 @@ class App:
             else:
                 self.movement_frame = 1
         
-        if self.player1_moving and self.state_player_1 == "normal":
+        if self.player1_moving and self.state_player_1 == "normal" and not self.player_1_hits:
             if self.movement_frame == 0:
                 pyxel.blt(self.rect_x1 - 3, self.rect_y1, 0, 0, 200, 32, 32, 10) if self.p1richtung == "right" else\
                 pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 100, 32, 32, 10)
             else:
                 pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 1, 32, 32, 10)  if self.p1richtung == "right" else\
                 pyxel.blt(self.rect_x1, self.rect_y1, 0, 34, 200, 32, 32, 10)
-        elif not self.player1_moving and self.state_player_1 == "normal": # idle frame
+        elif not self.player1_moving and self.state_player_1 == "normal" and not self.player_1_hits: # idle frame
             pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 1, 32, 32, 10) if self.p1richtung  == "right" else\
             pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 100, 32, 32, 10)
 
         # Block Player 1
-        if self.state_player_1 == "blocking":
+        if self.state_player_1 == "blocking" and not self.player_1_hits:
             pyxel.blt(self.rect_x1, self.rect_y1, 0, 100, 1, 32, 32, 10) if self.p1richtung == "right" else\
             pyxel.blt(self.rect_x1, self.rect_y1, 0, 100, 100, 32, 32, 10)
 
@@ -298,6 +298,20 @@ class App:
         pyxel.blt(110, 10, 0, 100, 67, 32, 32, 10)
 
         # Hit
+        if self.p1IsPunching:
+            self.player_1_hits = True
+
+        if self.player_1_hits:
+            if self.count_hit_images % 2 == 0:
+                pyxel.blt(self.rect_x1 + 6, self.rect_y1, 0, 34, 67, 32, 32, 10)
+            else:
+                pyxel.blt(self.rect_x1 + 4, self.rect_y1, 0, 0, 67, 32, 32, 10)
+
+            if self.animation_timer % 5 == 0:
+                self.count_hit_images += 1
+                
+        
+        print(self.count_hit_images)
         
 
         
