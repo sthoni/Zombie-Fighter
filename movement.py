@@ -1,55 +1,60 @@
 import pyxel
 import time
 
-# Movement
+
+# Movement Spieler 1
 def movementP1(xPos, richtung, state, speed, is_moving):
     
-    if pyxel.btn(pyxel.KEY_D):
+    if pyxel.btn(pyxel.KEY_D): # rechts bewegen
         is_moving = True
         if xPos <= 180 - 32:
             if state == "normal":
                 xPos += speed 
             richtung = "right"
-    elif pyxel.btn(pyxel.KEY_A):
+    elif pyxel.btn(pyxel.KEY_A): # links bewegen
         is_moving = True
         if xPos >= 0:
             if state == "normal":
                 xPos -= speed 
             richtung = "left"
-    else:
+    else: # wenn er sich überhaupt nicht bewegt
         is_moving = False
 
     return xPos, richtung, is_moving
 
+
+# Movement Spieler 2
 def movementP2(xPos, richtung, state, speed, is_moving):
-    if pyxel.btn(pyxel.KEY_RIGHT):
+
+    if pyxel.btn(pyxel.KEY_RIGHT): # rechts bewegen
         is_moving = True
         if xPos <= 180 - 32:
             if state == "normal":
                 xPos += speed
             richtung = "right"
-    elif pyxel.btn(pyxel.KEY_LEFT):
+    elif pyxel.btn(pyxel.KEY_LEFT): # links bewegen
         is_moving = True
         if xPos >= 0:
             if state == "normal":
                 xPos -= speed 
             richtung = "left"
-    else:
+    else: # wenn er sich überhaupt nicht bewegt
         is_moving = False
 
     return xPos, richtung, is_moving
 
+
+# Springen
 def jump(rect_y, last_jump_time):
     
     if rect_y == 59.5 and time.time() - last_jump_time > 0.5:
         last_jump_time = time.time()
         rect_y -= 20
-
     
     return rect_y, last_jump_time
 
 
-#Gravitation
+# Schwerkraft
 def gravitation(rect_y, velocity, gravity):
     if rect_y + 45 <= 100:
         velocity += gravity
@@ -60,13 +65,14 @@ def gravitation(rect_y, velocity, gravity):
 
     return rect_y, velocity
 
-#Attacken
-def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #pIsPunching: p1_is_punching (Für Hitbox)   p_last_punch_time: Cooldoown Zeit (Letzter Schlag)
+
+# Attacke Player 1
+def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): # pIsPunching: p1_is_punching (Für Hitbox)   p_last_punch_time: Cooldoown Zeit (Letzter Schlag)
     if pyxel.btnp(pyxel.KEY_SPACE) and time.time() - p_last_punch_time >= 0.5: # Geguckt ob G gedrückt wird und Cooldown
-        p_is_punching = True #Aktiviert die Hitbox
+        p_is_punching = True # Aktiviert die Hitbox
         p_last_punch_time = time.time() # Letzter Schlag (Zeit) wird auf jetzt gesetzt
 
-        if collision_rechts(player_x, enemy_x):
+        if collision_right(player_x, enemy_x): # Kollision rechts
             if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1_direction == "right":
                 hp2 -= 80
                 self.player2_hitted = True
@@ -78,7 +84,7 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
                 pyxel.play(3,51)
                 self.rect_x2 += 2
 
-        if collision_links(player_x, enemy_x):
+        if collision_left(player_x, enemy_x): # Kollision links
             if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1_direction == "left":
                 hp2 -= 80
                 self.player2_hitted = True
@@ -89,23 +95,21 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
                 self.player2_hitted = True
                 pyxel.play(3,51)
                 self.rect_x2 -= 2
-
-    
-    else: # Wir müssen Herr Thon fragen, ob das eine gute Lösung ist aber ich glaube ja weil es nur einmal aufgerufen wird (1 Frame)
+  
+    else:
         p_is_punching = False
     
-    return p_is_punching, p_last_punch_time, hp2, self #Return damit die Variable in main.py verändert wird sonst geht es nicht
+    return p_is_punching, p_last_punch_time, hp2, self
 
 
-
-#Gleiche Methode aber mit Taste 5 auf der Tastatur Rechts für Spieler 2
+# Attacke Player 2
 def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
     if pyxel.btnp(pyxel.KEY_KP_0) and time.time() - p_last_punch_time >= 0.5:
         p_is_punching = True
         
         p_last_punch_time = time.time()
 
-        if collision_rechts(player_x, enemy_x):
+        if collision_right(player_x, enemy_x): # Kollision rechts
             if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2_direction == "right":
                 hp1 -= 80
                 self.player1_hitted = True
@@ -117,7 +121,7 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
                 pyxel.play(2,50)
                 self.rect_x1 += 2
         
-        if collision_links(player_x, enemy_x):
+        if collision_left(player_x, enemy_x): # Kollision links
             if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2_direction == "left":
                 hp1 -= 80
                 self.player1_hitted = True
@@ -134,10 +138,12 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
 
     return p_is_punching, p_last_punch_time, hp1, self
 
-def collision_rechts(player_x, enemy_x):
+
+def collision_right(player_x, enemy_x): # Kollision rechts
     if enemy_x >= player_x and enemy_x <= player_x +28:
         return True
-    
-def collision_links(player_x, enemy_x):
+
+
+def collision_left(player_x, enemy_x): # Kollision links
     if enemy_x >= player_x -28 and enemy_x <= player_x:
         return True
