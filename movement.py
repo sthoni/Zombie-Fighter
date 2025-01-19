@@ -11,7 +11,7 @@ def movementP1(xPos, richtung, state, speed, speed_block, is_moving):
                     xPos += speed_block
                 else:
                     xPos += speed 
-                richtung = "rechts"
+                richtung = "right"
     elif pyxel.btn(pyxel.KEY_A):
         is_moving = True
         if xPos >= 0:
@@ -19,7 +19,7 @@ def movementP1(xPos, richtung, state, speed, speed_block, is_moving):
                 xPos -= speed_block
             else:
                 xPos -= speed 
-            richtung = "links"
+            richtung = "left"
     else:
         is_moving = False
 
@@ -32,14 +32,14 @@ def movementP2(xPos, richtung, state, speed, speed_block):
                 xPos += speed_block
             if state == "normal":
                 xPos += speed
-            richtung = "rechts"
+            richtung = "right"
     elif pyxel.btn(pyxel.KEY_LEFT):
         if xPos >= 0:
             if state == "normal":
                 xPos -= speed 
             else:
                 xPos -= speed_block
-            richtung = "links"
+            richtung = "left"
 
     return xPos, richtung
 
@@ -71,11 +71,11 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
         p_last_punch_time = time.time() # Letzter Schlag (Zeit) wird auf jetzt gesetzt
 
         if collision_rechts(player_x, enemy_x):
-            if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1richtung == "rechts":
+            if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1richtung == "right":
                 hp2 -= 80
                 pyxel.play(3,51)
                 self.rect_x2 += 6
-            elif self.state_player_2 == "blocking" and self.state_player_1 == "normal" and self.p1richtung == "rechts":
+            elif self.state_player_2 == "blocking" and self.state_player_1 == "normal" and self.p1richtung == "right":
                 hp2 -= 10
                 pyxel.play(3,51)
                 self.rect_x2 += 2
@@ -83,11 +83,11 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
             print("Rechts")
 
         if collision_links(player_x, enemy_x):
-            if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1richtung == "links":
+            if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1richtung == "left":
                 hp2 -= 80
                 pyxel.play(3,51)
                 self.rect_x2 -= 6
-            elif self.state_player_2 == "blocking" and self.state_player_1 == "normal" and self.p1richtung == "links":
+            elif self.state_player_2 == "blocking" and self.state_player_1 == "normal" and self.p1richtung == "left":
                 hp2 -= 10
                 pyxel.play(3,51)
                 self.rect_x2 -= 2
@@ -110,11 +110,11 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
         p_last_punch_time = time.time()
 
         if collision_rechts(player_x, enemy_x):
-            if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2richtung == "rechts":
+            if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2richtung == "right":
                 hp1 -= 80
                 pyxel.play(2,50)
                 self.rect_x1 += 6
-            elif self.state_player_1 == "blocking" and self.state_player_2 == "normal" and self.p2richtung == "rechts":
+            elif self.state_player_1 == "blocking" and self.state_player_2 == "normal" and self.p2richtung == "right":
                 hp1 -= 10
                 pyxel.play(2,50)
                 self.rect_x1 += 2
@@ -122,11 +122,11 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
             print("Rechts")
 
         if collision_links(player_x, enemy_x):
-            if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2richtung == "links":
+            if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2richtung == "left":
                 hp1 -= 80
                 pyxel.play(2,50)
                 self.rect_x1 -= 6
-            elif self.state_player_1 == "blocking" and self.state_player_2 == "normal" and self.p2richtung == "links":
+            elif self.state_player_1 == "blocking" and self.state_player_2 == "normal" and self.p2richtung == "left":
                 hp1 -= 10
                 pyxel.play(2,50)
                 self.rect_x1 -= 2
