@@ -7,16 +7,12 @@ def movementP1(xPos, richtung, state, speed, is_moving):
     if pyxel.btn(pyxel.KEY_D):
         is_moving = True
         if xPos <= 180 - 32:
-            #if state == "blocking":
-            #    xPos += speed_block
             if state == "normal":
                 xPos += speed 
             richtung = "right"
     elif pyxel.btn(pyxel.KEY_A):
         is_moving = True
         if xPos >= 0:
-            #if state == "blocking":
-            #    xPos -= speed_block
             if state == "normal":
                 xPos -= speed 
             richtung = "left"
@@ -73,26 +69,26 @@ def punch_p1(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp2): #p
         if collision_rechts(player_x, enemy_x):
             if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1_direction == "right":
                 hp2 -= 80
+                self.player2_hitted = True
                 pyxel.play(3,51)
                 self.rect_x2 += 6
             elif self.state_player_2 == "blocking" and self.state_player_1 == "normal" and self.p1_direction == "right":
                 hp2 -= 10
+                self.player2_hitted = True
                 pyxel.play(3,51)
                 self.rect_x2 += 2
-            print("P2: " , hp2)
-            print("Rechts")
 
         if collision_links(player_x, enemy_x):
             if self.state_player_2 == "normal" and self.state_player_1 == "normal" and self.p1_direction == "left":
                 hp2 -= 80
+                self.player2_hitted = True
                 pyxel.play(3,51)
                 self.rect_x2 -= 6
             elif self.state_player_2 == "blocking" and self.state_player_1 == "normal" and self.p1_direction == "left":
                 hp2 -= 10
+                self.player2_hitted = True
                 pyxel.play(3,51)
                 self.rect_x2 -= 2
-            print("P2: " , hp2)
-            print("Links")
 
     
     else: # Wir müssen Herr Thon fragen, ob das eine gute Lösung ist aber ich glaube ja weil es nur einmal aufgerufen wird (1 Frame)
@@ -112,26 +108,26 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
         if collision_rechts(player_x, enemy_x):
             if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2_direction == "right":
                 hp1 -= 80
+                self.player1_hitted = True
                 pyxel.play(2,50)
                 self.rect_x1 += 6
             elif self.state_player_1 == "blocking" and self.state_player_2 == "normal" and self.p2_direction == "right":
                 hp1 -= 10
+                self.player1_hitted = True
                 pyxel.play(2,50)
                 self.rect_x1 += 2
-            print("P1: ", hp1)
-            print("Rechts")
         
         if collision_links(player_x, enemy_x):
             if self.state_player_1 == "normal" and self.state_player_2 == "normal" and self.p2_direction == "left":
                 hp1 -= 80
+                self.player1_hitted = True
                 pyxel.play(2,50)
                 self.rect_x1 -= 6
             elif self.state_player_1 == "blocking" and self.state_player_2 == "normal" and self.p2_direction == "left":
                 hp1 -= 10
+                self.player1_hitted = True
                 pyxel.play(2,50)
                 self.rect_x1 -= 2
-            print("P1: " , hp1)
-            print("Links")
 
     else: 
         p_is_punching = False

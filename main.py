@@ -89,6 +89,11 @@ class App:
 
         self.count_hit_images2 = int
 
+
+        self.player1_hitted = False
+        self.player2_hitted = False
+
+
         pyxel.run(self.update, self.draw)
 
 
@@ -301,14 +306,16 @@ class App:
 
         animations.block_animation(self.state_player_2, self.player_2_hits, self.p2_direction, self.rect_x2, self.rect_y2) # p2
 
-        #Hit 1
+        #Hit
         self.player_1_hits, self.count_images_hit1, self.count_hit_images1, self.choose_animation1 = animations.hit_animation(self.p1IsPunching, 
                                                                             self.player_1_hits, self.count_images_hit1, self.count_hit_images1, 
-                                                                            self.choose_animation1, self.p1_direction, self.rect_x1, self.rect_y2)
+                                                                            self.choose_animation1, self.p1_direction, self.rect_x1, self.rect_y2, 
+                                                                            self.state_player_1, self)
         
         self.player_2_hits, self.count_images_hit2, self.count_hit_images2, self.choose_animation2 = animations.hit_animation(self.p2IsPunching, 
                                                                             self.player_2_hits, self.count_images_hit2, self.count_hit_images2, 
-                                                                            self.choose_animation2, self.p2_direction, self.rect_x2, self.rect_y2)
+                                                                            self.choose_animation2, self.p2_direction, self.rect_x2, self.rect_y2,
+                                                                            self.state_player_2, self)
 
         
     def draw_intro(self):
@@ -356,20 +363,10 @@ class App:
 
 
         # Cooldown indikator p1
-        pyxel.rect(12, 24, 5,5, self.p1_indikator)
-        pyxel.rect(20, 24, 5,5, self.block_indicator_p1)
+        pyxel.rect(51, 24, 5, 5, self.block_indicator_p1)
 
         # Cooldown indikator p2
-        pyxel.rect(120, 24, 5,5, self.p2_indikator)
-        pyxel.rect(128, 24, 5,5, self.block_indicator_p2)
-
-
-        # Block indikator
-        if self.state_player_1 == "blocking":
-            pyxel.rect(self.rect_x1 + 9, self.rect_y1 + 9, 13, 13, 13)
-
-        if self.state_player_2 == "blocking":
-            pyxel.rect(self.rect_x2 + 9, self.rect_y2 + 9, 13, 13, 13)
+        pyxel.rect(128, 24, 5, 5, self.block_indicator_p2)
 
 
     def draw_game_over(self):

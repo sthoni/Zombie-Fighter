@@ -32,17 +32,16 @@ def block_animation(state_player, player_hits, player_direction, rect_x, rect_y)
             pyxel.blt(rect_x, rect_y, 0, 100, 100, 32, 32, 10)
 
 
-def hit_animation(p_is_punching, p_hits, count_images_hit, count_hit_images, choose_animation, p_1_direction, rect_x, rect_y):
+def hit_animation(p_is_punching, p_hits, count_images_hit, count_hit_images, choose_animation, p_1_direction, rect_x, rect_y, p_state, self):
     if p_is_punching:
             p_hits = True
         
     if p_hits:
         count_images_hit += 1
 
-    if p_hits and count_hit_images != 3:
+    if p_hits and count_hit_images != 3 and p_state != "blocking":
         if count_hit_images == 1:
             choose_animation = random.randint(1, 2)
-            print(choose_animation)
 
             pyxel.blt(rect_x + 4, rect_y, 0, 0 if choose_animation == 1 else 67, 67, 32, 32, 10) if p_1_direction == "right" else\
             pyxel.blt(rect_x - 7, rect_y, 0, 0 if choose_animation == 1 else 67, 167, 32, 32, 10)
@@ -56,5 +55,21 @@ def hit_animation(p_is_punching, p_hits, count_images_hit, count_hit_images, cho
     else: 
         p_hits = False
         count_hit_images = 0
+
+    # light up when hitted
+    if self.player2_hitted:
+        if self.p2_direction == "right":
+            pyxel.blt(self.rect_x2 + 2, self.rect_y2, 0, 133, 34, 32, 32, 10)
+        else:
+            pyxel.blt(self.rect_x2 - 3, self.rect_y2, 0, 167, 34, 32, 32, 10)
+        self.player2_hitted = False
+
+    if self.player1_hitted:
+        if self.p1_direction == "right":
+            pyxel.blt(self.rect_x1 + 2, self.rect_y1, 0, 133, 34, 32, 32, 10)
+        else:
+            pyxel.blt(self.rect_x1 - 3, self.rect_y1, 0, 167, 34, 32, 32, 10)
+        self.player1_hitted = False
+
 
     return p_hits, count_images_hit, count_hit_images, choose_animation
