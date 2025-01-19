@@ -2,22 +2,22 @@ import pyxel
 import time
 
 # Movement
-def movementP1(xPos, richtung, state, speed, speed_block, is_moving):
+def movementP1(xPos, richtung, state, speed, is_moving):
     
     if pyxel.btn(pyxel.KEY_D):
-            is_moving = True
-            if xPos <= 180 - 32:
-                if state == "blocking":
-                    xPos += speed_block
-                else:
-                    xPos += speed 
-                richtung = "right"
+        is_moving = True
+        if xPos <= 180 - 32:
+            #if state == "blocking":
+            #    xPos += speed_block
+            if state == "normal":
+                xPos += speed 
+            richtung = "right"
     elif pyxel.btn(pyxel.KEY_A):
         is_moving = True
         if xPos >= 0:
-            if state == "blocking":
-                xPos -= speed_block
-            else:
+            #if state == "blocking":
+            #    xPos -= speed_block
+            if state == "normal":
                 xPos -= speed 
             richtung = "left"
     else:
@@ -25,20 +25,18 @@ def movementP1(xPos, richtung, state, speed, speed_block, is_moving):
 
     return xPos, richtung, is_moving
 
-def movementP2(xPos, richtung, state, speed, speed_block):
+def movementP2(xPos, richtung, state, speed, is_moving):
     if pyxel.btn(pyxel.KEY_RIGHT):
+        is_moving = True
         if xPos <= 180 - 32:
-            if state == "blocking":
-                xPos += speed_block
             if state == "normal":
                 xPos += speed
             richtung = "right"
     elif pyxel.btn(pyxel.KEY_LEFT):
+        is_moving = True
         if xPos >= 0:
             if state == "normal":
                 xPos -= speed 
-            else:
-                xPos -= speed_block
             richtung = "left"
 
     return xPos, richtung

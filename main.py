@@ -1,6 +1,7 @@
 import pyxel
 import movement
 import time
+import random
 
 
 class App:
@@ -30,14 +31,13 @@ class App:
         
         self.block_sound_played_p1, self.block_sound_played_p2 = False,  False
 
-        self.player1_moving = False
-        
+        self.player1_moving, self.player2_moving = False, False
+
 
         # General
         self.gravity = 0.75
 
         self.speed = 3
-        self.speed_block = self.speed // 2
 
         self.backgroundColor = 0
        
@@ -63,13 +63,23 @@ class App:
         #Intro
         self.press_cooldown_intro = 5
 
-        # Animation
-        self.animation_timer = 0
+        # Animation Player 1
+        self.animation_timer1 = 0
 
-        self.movement_frame = int # move
+        self.movement_frame1 = int # move
 
+        self.count_punch_updates_p1 = 0
         self.player_1_hits = False # hit
-        self.count_hit_images = 0
+        self.count_images_hit1 = 0
+
+        # Animation Player 2
+        self.animation_timer2 = 0
+
+        self.movement_frame2 = int # move
+
+        self.count_punch_updates_p2 = 0
+        self.player_2_hits = False # hit
+        self.count_images_hit2 = 0
 
         pyxel.run(self.update, self.draw)
 
@@ -85,8 +95,6 @@ class App:
             self.update_game_over()
         elif self.state == "Intro":
             self.update_intro()
-
-
 
     def update_menu(self):
 
@@ -110,7 +118,6 @@ class App:
 
         if pyxel.btn(pyxel.KEY_LEFT):
             self.state = "Menu"
-            print("Controls")
             pyxel.play(2, 53)
 
     def update_intro(self):
@@ -136,15 +143,14 @@ class App:
         #    pyxel.playm(2, loop = True)
         #    self.musik_started = True
 
-        # Always turned toward the other player
-        self.p1richtung = "right" if self.rect_x1 < self.rect_x2 else "left"
-
         # Movement
         self.rect_x1, self.p1richtung, self.player1_moving = movement.movementP1(self.rect_x1, self.p1richtung, self.state_player_1, 
-                                                            self.speed, self.speed_block, self.player1_moving)
+                                                            self.speed, self.player1_moving)
 
         self.rect_x2, self.p2richtung = movement.movementP2(self.rect_x2, self.p2richtung, self.state_player_2, 
-                                                            self.speed, self.speed_block)
+                                                            self.speed, self.player2_moving)
+        #Always turned toward the other player
+        self.p1richtung = "right" if self.rect_x1 < self.rect_x2 else "left"
 
         # Jump
         if 62 > self.rect_y1 > 55:
@@ -267,21 +273,22 @@ class App:
 
     def draw_animations(self):
         # Movement Player 1
-        self.animation_timer += 1
+        self.animation_timer1 += 1
 
-        if self.animation_timer % 4 == 0:
-            if (self.animation_timer / 4) % 2:
-                self.movement_frame = 0
+        if self.animation_timer1 % 4 == 0:
+            if (self.animation_timer1 / 4) % 2:
+                self.movement_frame1 = 0
             else:
-                self.movement_frame = 1
+                self.movement_frame1 = 1
         
         if self.player1_moving and self.state_player_1 == "normal" and not self.player_1_hits:
-            if self.movement_frame == 0:
+            if self.movement_frame1 == 0:
                 pyxel.blt(self.rect_x1 - 3, self.rect_y1, 0, 0, 200, 32, 32, 10) if self.p1richtung == "right" else\
                 pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 100, 32, 32, 10)
             else:
                 pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 1, 32, 32, 10)  if self.p1richtung == "right" else\
                 pyxel.blt(self.rect_x1, self.rect_y1, 0, 34, 200, 32, 32, 10)
+
         elif not self.player1_moving and self.state_player_1 == "normal" and not self.player_1_hits: # idle frame
             pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 1, 32, 32, 10) if self.p1richtung  == "right" else\
             pyxel.blt(self.rect_x1, self.rect_y1, 0, 67, 100, 32, 32, 10)
@@ -291,28 +298,60 @@ class App:
             pyxel.blt(self.rect_x1, self.rect_y1, 0, 100, 1, 32, 32, 10) if self.p1richtung == "right" else\
             pyxel.blt(self.rect_x1, self.rect_y1, 0, 100, 100, 32, 32, 10)
 
-        # Hit Player 1
-        pyxel.blt(5, 10, 0, 0, 67, 32, 32, 10)
-        pyxel.blt(40, 10, 0, 34, 67, 32, 32, 10)
-        pyxel.blt(75, 10, 0, 67, 67, 32, 32, 10)
-        pyxel.blt(110, 10, 0, 100, 67, 32, 32, 10)
-
-        # Hit
+        # Hit 1
         if self.p1IsPunching:
             self.player_1_hits = True
-
+        
         if self.player_1_hits:
-            if self.count_hit_images % 2 == 0:
-                pyxel.blt(self.rect_x1 + 6, self.rect_y1, 0, 34, 67, 32, 32, 10)
-            else:
-                pyxel.blt(self.rect_x1 + 4, self.rect_y1, 0, 0, 67, 32, 32, 10)
+            self.count_images_hit1 += 1
 
-            if self.animation_timer % 5 == 0:
+        if self.player_1_hits and self.count_hit_images != 3:
+            if self.count_hit_images == 1:
+                self.choose_animation = random.randint(1, 2)
+                print(self.choose_animation)
+
+                pyxel.blt(self.rect_x1 + 4, self.rect_y1, 0, 0 if self.choose_animation == 1 else 67, 67, 32, 32, 10) if self.p1richtung == "right" else\
+                pyxel.blt(self.rect_x1 - 7, self.rect_y1, 0, 0 if self.choose_animation == 1 else 67, 167, 32, 32, 10)
+
+            elif self.count_hit_images == 2:
+                pyxel.blt(self.rect_x1 + 6, self.rect_y1, 0, 34 if self.choose_animation == 1 else 100, 67, 32, 32, 10) if self.p1richtung == "right" else\
+                pyxel.blt(self.rect_x1 - 9, self.rect_y1, 0, 34 if self.choose_animation == 1 else 100, 167, 32, 32, 10)
+
+            if self.count_images_hit1 % 3 == 0:
                 self.count_hit_images += 1
-                
+        else: 
+            self.player_1_hits = False
+            self.count_hit_images = 0
+
+        # Hit Player 
+        pyxel.blt(5, 10, 0, 67, 67, 32, 32, 10)
+        pyxel.blt(40, 10, 0, 100, 67, 32, 32, 10)
+
+        pyxel.blt(75, 10, 0, 67, 167, 32, 32, 10)
+        pyxel.blt(110, 10, 0, 100, 167, 32, 32, 10)
         
-        print(self.count_hit_images)
+        # Movement Player 2
+        #pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 1, 32, 32, 10)
+        self.animation_timer2 += 1
+
+        if self.animation_timer2 % 4 == 0:
+            if (self.animation_timer2 / 4) % 2:
+                self.movement_frame2 = 0
+            else:
+                self.movement_frame2 = 1
         
+        if self.player2_moving and self.state_player_2 == "normal" and not self.player_2_hits:
+            if self.movement_frame2 == 0:
+                pyxel.blt(self.rect_x2 - 3, self.rect_y2, 0, 0, 200, 32, 32, 10) if self.p2richtung == "right" else\
+                pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 100, 32, 32, 10)
+            else:
+                pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 1, 32, 32, 10)  if self.p2richtung == "right" else\
+                pyxel.blt(self.rect_x2, self.rect_y2, 0, 34, 200, 32, 32, 10)
+
+        elif not self.player2_moving and self.state_player_2 == "normal" and not self.player_2_hits: # idle frame
+            pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 1, 32, 32, 10) if self.p2richtung  == "right" else\
+            pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 100, 32, 32, 10)
+
 
         
     def draw_intro(self):
@@ -342,12 +381,6 @@ class App:
         pyxel.rect(self.rect_x2 + 16, self.rect_y2,20,32,3) #Blau
         pyxel.rect(self.rect_x2 - 4, self.rect_y2,20,32,2) # Lila
 
-        
-        #Spieler 1
-
-        #Spieler 2
-        pyxel.blt(self.rect_x2, self.rect_y2, 0, 67, 1, 32, 32, 10)
-
         # HP bar for Player 1
         pyxel.rect(12, 7, 1000 / 22, 5, 8)
         pyxel.rect(12, 7, self.hp1 / 22, 5, 3)
@@ -367,7 +400,6 @@ class App:
         pyxel.rect(128, 20, 5,5, self.block_indicator_p2)
 
 
-        print(self.p1richtung)
         # Block indikator
         if self.state_player_1 == "blocking":
             pyxel.rect(self.rect_x1 + 9, self.rect_y1 + 9, 13, 13, 13)
@@ -375,8 +407,6 @@ class App:
         if self.state_player_2 == "blocking":
             pyxel.rect(self.rect_x2 + 9, self.rect_y2 + 9, 13, 13, 13)
 
-
-        
 
 
         #if self.p1IsPunching:
