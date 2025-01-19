@@ -157,7 +157,7 @@ class App:
 
         # Play Music
         if self.musik_started == False:
-            #pyxel.playm(2, loop = True)
+            pyxel.playm(2, loop = True)
             self.musik_started = True
 
         # Movement
