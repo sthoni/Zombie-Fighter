@@ -139,9 +139,9 @@ def punch_p2(self, p_is_punching, p_last_punch_time, enemy_x, player_x, hp1):
     return p_is_punching, p_last_punch_time, hp1, self
 
 def collision_rechts(player_x, enemy_x):
-    if enemy_x >= player_x + 16 and enemy_x <= player_x + 26 or enemy_x < player_x + 36 and enemy_x + 40 > player_x + 25:
+    if enemy_x >= player_x and enemy_x <= player_x +28:
         return True
     
 def collision_links(player_x, enemy_x):
-    if enemy_x >= player_x - 10 and enemy_x <= player_x or enemy_x < player_x -10 and enemy_x + 28 > player_x -10:
+    if enemy_x >= player_x -28 and enemy_x <= player_x:
         return True

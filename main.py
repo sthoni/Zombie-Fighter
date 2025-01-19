@@ -152,7 +152,7 @@ class App:
 
         # Play Music
         if self.musik_started == False:
-            pyxel.playm(2, loop = True)
+            #pyxel.playm(2, loop = True)
             self.musik_started = True
 
         # Movement
@@ -338,6 +338,8 @@ class App:
         pyxel.blt(12, 7, 1, 7,7,48,7,0)
         pyxel.blt(12, 7, 1, 6,32,48,20,0)
 
+        pyxel.blt(25, -6, 1, 8,56,16,16, 0)
+
         #Pfeil Spieler 1
         pyxel.blt(self.rect_x1 + 5, self.rect_y1- 10, 1, 8,56,16,16, 0)
 
@@ -346,6 +348,8 @@ class App:
         pyxel.rect(120, 8, self.hp2 / 21, 5, 3)
         pyxel.blt(120, 7, 1, 7,7,48,7,0)
         pyxel.blt(120, 7, 1, 6,32,48,20,0)
+
+        pyxel.blt(133, -6, 1, 20,56,16,16, 0)
 
         #Pfeil Spieler 2
         pyxel.blt(self.rect_x2 + 5, self.rect_y2- 10, 1, 20,56,16,16, 0)
